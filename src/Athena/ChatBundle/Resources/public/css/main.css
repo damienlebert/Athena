@@ -1,11 +1,14 @@
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../bundles/athenachat/vendor/bootstrap/fonts/glyphicons-halflings-regular.eot');
+  src: url('../bundles/athenachat/vendor/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../bundles/athenachat/vendor/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../bundles/athenachat/vendor/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../bundles/athenachat/vendor/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
 .navbar .navbar-nav > .active > a {
     background-color: #EEEEEE;
 }
 .navbar-text{
     color: #FFFFFF;
-}
-#contenu-page {
-  margin-top: 70px;
 }
 .container-max{
     width:100%;
@@ -22,16 +25,15 @@
     padding:0px;
 }
 .panel-conversation{
-    max-width:200px;
-    max-height:250px;
+    max-width:250px;
     height:250px;
-    width:200px;
+    width:250px;
     float:right;
-    padding-left: 0px; 
+    padding-left: 0px;
     padding-right: 0px;
 }
 .input-conversation{
-    
+
 }
 .navbar-fixed-bottom{
     background:transparent;
@@ -53,14 +55,14 @@
 {
     background-image: linear-gradient(to bottom, #EEEEEE 0px, #E8E8E8 100%);
     background-repeat: repeat-x;
-    border-top:0;
-    height:18px;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    height:35px;
     cursor:pointer;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 5px rgba(0, 0, 0, 0.075);
 }
 .table-users
 {
-    border: 1px solid grey;
     border-bottom:0;
     bottom:0;
     position:fixed;
@@ -68,18 +70,12 @@
     width:250px;
     border-collapse:inherit;
 }
-.user-td
-{
-    font-size:12px;
-    cursor:pointer;
-    height:20px;
-    background-color:white;
-}
+
 
 .conversation-container
 {
     position:fixed;
-    right:215px;
+    right:282px;
     overflow:visible;
     bottom:0;
     height:20px;
@@ -96,7 +92,7 @@
 
 .module {
   width: 250px;
-  margin: 20px 5px 0 0; 
+  margin: 20px 5px 0 0;
   position:relative;
   bottom:284px;
   float:right;
@@ -161,7 +157,7 @@
   background: #e5e5e5;
   margin: 0;
   padding: 0;
-  
+
 }
 .discussion li {
   padding: 0.5rem;
@@ -221,7 +217,7 @@
     height:218px;
     overflow:auto;
     background-color: #e5e5e5;
-    
+
 }
 .messages {
   background: white;
@@ -250,7 +246,7 @@
 
 .droite{
     float:right;
-    right:50px;
+    right:15px;
 }
 .non-connecte
 {
@@ -261,16 +257,62 @@
     color:#099400;
 }
 
-.btn-google {
-  height: 44px;
-  position: relative;
-  top: -5px;
-  right: -4px;
-  float: right;
-  margin: 0;
+#users
+{
+  max-height:650px;
+  margin-right:0;
+  overflow:auto;
+}
+.user-td
+{
+    font-size:12px;
+    width:100%;
+    cursor:pointer;
+    background-color:white;
+    border-bottom: 1px solid #EFEFEF;
+}
+.tableau-users
+{
+  border-left: 1px solid grey;
+  background-color:white;
+  list-style:none;
+  margin-left:0;
+  padding-left:5px;
 }
 
+.tableau-users > li
+{
+  list-style:none;
+  margin-left:0;
+  padding-left:0;
+  padding-left:5px;
+  width:100%;
+  padding-top:5px;
+  padding-bottom:5px;
+  display: block;
+  clear: both;
+  font-weight: normal;
+  color: #333333;
+}
+.tableau-users > li:hover,
+.tableau-users > li:focus {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #428bca;
+}
 
+.avatar-users{
+     height:25px;
+     margin-right:5px;
+}
+
+.glyphicon-remove-circle {
+    top:5px;
+}
+
+.glyphicon-ok-circle {
+    top:5px;
+}
 
 
 

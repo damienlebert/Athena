@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ChatController extends Controller
 {
-    public function welcomeAction($name)
+    public function welcomeAction()
     {
-        return $this->render('AthenaChatBundle:Pages:test.html.twig', array('name' => $name));
+        return $this->render('AthenaChatBundle:Pages:index.html.twig');
     }
 }

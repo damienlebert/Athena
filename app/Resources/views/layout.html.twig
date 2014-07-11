@@ -12,9 +12,11 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    {% stylesheets filter='cssrewrite'
+    {% stylesheets filter=''
     '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css'
     '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/css/bootstrap-theme.min.css'
+    '@AthenaChatBundle/Resources/public/css/fonts/typicons.min.css'
+    '@AthenaChatBundle/Resources/public/css/jquery.mCustomScrollbar.css'
     '@AthenaChatBundle/Resources/public/css/main.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -23,41 +25,41 @@
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
-    <div class="navbar navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                 <a class="navbar-brand" href="./welcome" onClick="changerPage('welcome');return false;">ATHENA Messenger</a>                            
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                        <li id='welcome' class="active">
-                            <a href="./welcome" onClick="changerPage('welcome');return false;">Accueil</a>
-                        </li>
-                        <li id='chat' class="inactive">
-                            <a href="./chat" onClick="changerPage('chat');return false;">Chat</a>
-                        </li>
-                        
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
+           <div class="navbar navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                         <a class="navbar-brand" href="/">ATHENA Messenger</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                                <li id='welcome' class="active">
+                                    <a href="/">Accueil</a>
+                                </li>
+                                <li id='chat' class="inactive">
+                                    <a href="/chat">Chat</a>
+                                </li>
+
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <li class="active">
-                        <p class="navbar-text blue-text">
-                            Bonjour {{ app.user.username }}&nbsp;
-                        </p>            
-                    </li>
-                    <li class="inactive">
-                        <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
-                    </li>
+		                    <li class="active">
+		                        <p class="navbar-text blue-text">
+		                            Bonjour {{ app.user.username }}&nbsp;
+		                        </p>
+		                    </li>
+		                    <li class="inactive">
+		                        <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+		                    </li>
 {% else %}
-                    <li class="inactive">
-                        <a href="{{ path('fos_user_security_login') }}">Connexion</a>
-                    </li>
-{% endif %}                    
-                </ul>
+                    		<li class="inactive">
+                        		<a href="{{ path('fos_user_security_login') }}">Connexion</a>
+                    		</li>
+{% endif %}
+                        </ul>
+                    </div>
+                    <!--/.navbar-collapse -->
+                </div>
             </div>
-            <!--/.navbar-collapse -->
-        </div>
-    </div>
     <div id="contenu-page">
         <div id="error"></div>
         {% block content %}
@@ -65,10 +67,46 @@
         {% endblock %}
 
     </div>
+
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+	<div class="navbar navbar-default navbar-fixed-bottom navbar-conversation" style="overflow:hidden;">
+	    <div class="container panel-conversation">
+	            <div class="table-users">
+	                <div class="row blue-text panel-head" onClick="$('#users').toggle('medium');">
+	                    <div style='padding:7px;'><strong>Conversation</strong></div>
+	                </div>
+	                <div class="row" id="users">
+	                    <ul class="tableau-users" id="liste-users">
+							<li id='contact-faudy' class='user-td' onClick='ajouterConversation("faudy", "Frederic Audy");'><img src="{{ asset('bundles/athenachat/images/avatars/A02.png') }}" class="avatar-users"/>Frederic Audy<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-fbar' class='user-td' onClick='ajouterConversation("fbar", "Foo Bar");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Foo Bar<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-mbooth' class='user-td' onClick='ajouterConversation("mbooth", "Melanie Booth");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Melanie Booth<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-eclarke' class='user-td' onClick='ajouterConversation("eclarke", "Emerson Clarke");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Emerson Clarke<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-ndoyle' class='user-td' onClick='ajouterConversation("ndoyle", "Noelani Doyle");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Noelani Doyle<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-sferrari' class='user-td' onClick='ajouterConversation("sferrari", "Sylvain Ferrari");'><img src="../img/avatars/FC03.png" class="avatar-users"/>Sylvain Ferrari<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-ggraves' class='user-td' onClick='ajouterConversation("ggraves", "Grant Graves");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Grant Graves<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-shays' class='user-td' onClick='ajouterConversation("shays", "Sawyer Hays");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Sawyer Hays<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-dhenderson' class='user-td' onClick='ajouterConversation("dhenderson", "Deacon Henderson");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Deacon Henderson<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-jholder' class='user-td' onClick='ajouterConversation("jholder", "Jordan Holder");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Jordan Holder<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-ringram' class='user-td' onClick='ajouterConversation("ringram", "Raja Ingram");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Raja Ingram<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-qking' class='user-td' onClick='ajouterConversation("qking", "Quyn King");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Quyn King<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-dlebert' class='user-td' onClick='ajouterConversation("dlebert", "Damien Lebert");'><img src="../img/avatars/C03.png" class="avatar-users"/>Damien Lebert<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-alee' class='user-td' onClick='ajouterConversation("alee", "Aidan Lee");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Aidan Lee<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-dlee' class='user-td' onClick='ajouterConversation("dlee", "Dane Lee");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Dane Lee<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-bleon' class='user-td' onClick='ajouterConversation("bleon", "Bo Leon");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Bo Leon<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-rmcfadden' class='user-td' onClick='ajouterConversation("rmcfadden", "Rebecca Mcfadden");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Rebecca Mcfadden<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-omercer' class='user-td' onClick='ajouterConversation("omercer", "Ocean Mercer");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Ocean Mercer<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-cmiller' class='user-td' onClick='ajouterConversation("cmiller", "Castor Miller");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Castor Miller<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-cmyers' class='user-td' onClick='ajouterConversation("cmyers", "Chester Myers");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Chester Myers<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-rochoa' class='user-td' onClick='ajouterConversation("rochoa", "Raymond Ochoa");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Raymond Ochoa<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-gorr' class='user-td' onClick='ajouterConversation("gorr", "Grace Orr");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Grace Orr<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-tparks' class='user-td' onClick='ajouterConversation("tparks", "Thane Parks");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Thane Parks<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-hperkins' class='user-td' onClick='ajouterConversation("hperkins", "Herman Perkins");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Herman Perkins<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-sramos' class='user-td' onClick='ajouterConversation("sramos", "September Ramos");'><img src="../img/avatars/avatar.png" class="avatar-users"/>September Ramos<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-arandolph' class='user-td' onClick='ajouterConversation("arandolph", "Ashely Randolph");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Ashely Randolph<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-rschmidt' class='user-td' onClick='ajouterConversation("rschmidt", "Russell Schmidt");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Russell Schmidt<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-osimpson' class='user-td' onClick='ajouterConversation("osimpson", "Ora Simpson");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Ora Simpson<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-hsutton' class='user-td' onClick='ajouterConversation("hsutton", "Harrison Sutton");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Harrison Sutton<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-isutton' class='user-td' onClick='ajouterConversation("isutton", "Ima Sutton");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Ima Sutton<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-htaylor' class='user-td' onClick='ajouterConversation("htaylor", "Haviva Taylor");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Haviva Taylor<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-ttoto' class='user-td' onClick='ajouterConversation("ttoto", "Tata Toto");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Tata Toto<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-evarli' class='user-td' onClick='ajouterConversation("evarli", "Enes Varli");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Enes Varli<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li><li id='contact-dvelasquez' class='user-td' onClick='ajouterConversation("dvelasquez", "Daniel Velasquez");'><img src="../img/avatars/avatar.png" class="avatar-users"/>Daniel Velasquez<span class='glyphicon glyphicon-remove-circle droite non-connecte'></span></li>
+	                    </ul>
+	                </div>
+	                <div class="row">
+	                    <div class='user-td tableau-users'>
+	                                <input class="form-control input-sm" style="border:0;" type="text" name="recherche" id="recherche" placeholder="Rechercher" width="100%" style="width:60%" onkeyup="rechercheUser($(this).val())" />
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    <div id="conversation-container" class="conversation-container">
+
+	    </div>
+{% else %}
+	</div>
+       <footer class="bs-footer" role="contentinfo">
+           <p class="indentH4">IP-FORMATION &copy; ATHENA Company 2013 - Pierre VASSOILLES & Damien LEBERT</p>
+       </footer>
+{% endif %}
+
     {% javascripts '@AthenaChatBundle/Resources/public/vendor/jquery/dist/jquery.min.js'
     '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/js/bootstrap.min.js'
-    '@AthenaChatBundle/Resources/public/js/main.js' %}
+    '@AthenaChatBundle/Resources/public/js/main.js'
+    '@AthenaChatBundle/Resources/public/js/jquery.mCustomScrollbar.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-</body>
+       <script type="text/javascript">
+              $("#users").mCustomScrollbar({
+                   theme:"minimal-dark"
+               });
+       </script>
+   </body>
 </html>
