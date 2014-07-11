@@ -1,0 +1,4 @@
+parameters:
+#    athena_chat.example.class: Athena\ChatBundle\Example
+
+services:

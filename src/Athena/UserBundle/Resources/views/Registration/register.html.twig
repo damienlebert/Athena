@@ -1,0 +1,38 @@
+{% form_theme form 'AthenaUserBundle:Form:bootstrap-override.html.twig' %}
+
+{% extends "AthenaUserBundle::user_layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+
+<div class="row">  
+  <div class="col-sm-2 col-md-2 col-lg-2"></div>
+  <div class="col-sm-8 col-md-8 col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="">Creation de votre compte</h4>
+            </div><!-- /.panel-header -->
+            <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" 
+                        class="form-horizontal">
+            <div class="panel-body">
+                
+                    {{ form_widget(form) }}
+                    <div>
+                        
+                    </div>
+                
+            </div>
+            <div class="panel-footer">
+                <button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                <input type="submit" class="btn btn-primary" value="{{ 'registration.submit'|trans }}" />
+
+            </div><!-- /.panel-footer -->
+
+            </form>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2"></div>
+    </div>
+</div>
+
+{% endblock fos_user_content %}

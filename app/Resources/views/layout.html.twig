@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}Athena Chat{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    {% stylesheets filter='cssrewrite'
+    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css'
+    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/css/bootstrap-theme.min.css'
+    '@AthenaChatBundle/Resources/public/css/main.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+</head>
+<body onLoad="initialise()">
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="navbar navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                 <a class="navbar-brand" href="./welcome" onClick="changerPage('welcome');return false;">ATHENA Messenger</a>                            
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                        <li id='welcome' class="active">
+                            <a href="./welcome" onClick="changerPage('welcome');return false;">Accueil</a>
+                        </li>
+                        <li id='chat' class="inactive">
+                            <a href="./chat" onClick="changerPage('chat');return false;">Chat</a>
+                        </li>
+                        
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li class="active">
+                        <p class="navbar-text blue-text">
+                            Bonjour {{ app.user.username }}&nbsp;
+                        </p>            
+                    </li>
+                    <li class="inactive">
+                        <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                    </li>
+{% else %}
+                    <li class="inactive">
+                        <a href="{{ path('fos_user_security_login') }}">Connexion</a>
+                    </li>
+{% endif %}                    
+                </ul>
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
+    </div>
+    <div id="contenu-page">
+        <div id="error"></div>
+        {% block content %}
+            <h1>Contenu par defaut</h1>
+        {% endblock %}
+
+    </div>
+    {% javascripts '@AthenaChatBundle/Resources/public/vendor/jquery/dist/jquery.min.js'
+    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/js/bootstrap.min.js'
+    '@AthenaChatBundle/Resources/public/js/main.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+</body>
+</html>

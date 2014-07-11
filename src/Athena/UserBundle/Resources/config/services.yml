@@ -1,0 +1,12 @@
+parameters:
+    my_user_provider.class: Athena\UserBundle\Security\Core\User\FOSUBUserProvider
+services:
+    my_user_provider:
+        class: "%my_user_provider.class%"
+        arguments: [@fos_user.user_manager,{facebook: facebookId, google: googleId}]
+
+    athena_user.registration.form.type:
+        class: Athena\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: athena_user_registration }

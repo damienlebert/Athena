@@ -1,0 +1,54 @@
+{% extends "AthenaUserBundle::user_layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+
+<div class="row">  
+  <div class="col-sm-2 col-md-2 col-lg-2"></div>
+  <div class="col-sm-8 col-md-8 col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="">Bienvenue, veuillez vous connecter pour participer au chat</h4>
+            </div><!-- /.panel-header -->
+            <form class="form-horizontal" action="{{ path("fos_user_security_check") }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <div class="panel-body">
+{% if error %}
+                    <div class="alert alert-danger">{{ error|trans }}</div>
+{% endif %}    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="username">Identifiant : </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" 
+                            placeholder="Identifiant" required="required" />
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-3 control-label" for="password">Mot de passe : </label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" name="_password" 
+                            placeholder="Mot de passe" required="required" />
+                        </div>
+                    </div>
+                </div><!-- /.panel-body -->
+            
+                <div class="panel-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <input type="submit" class="btn btn-primary" id="_submit" name="_submit" value="Connexion" />
+                    <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" alt="Sign in with Google">
+                        <img class="btn-google" src="{{ asset('bundles/athenachat/images/Red-signin.png') }}" alt="Sign in with Google" /></a>
+                </div><!-- /.panel-footer -->
+            </form><!-- /.formulaire-connexion -->
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2"></div>
+    </div>
+</div>
+
+{% endblock fos_user_content %}
+
+
+
+
+
