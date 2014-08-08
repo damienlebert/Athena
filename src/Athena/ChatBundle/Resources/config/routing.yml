@@ -1,3 +1,7 @@
 default:
     path:  /
     defaults: { _controller: AthenaChatBundle:Chat:welcome }
+    
+users:
+    path:  /users
+    defaults: { _controller: AthenaChatBundle:Chat:users }
