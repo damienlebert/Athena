@@ -104,3 +104,13 @@ hwi_oauth:
         #     client_id:           "facebook_app_id"
         #     client_secret:       "facebook_app_secret"
         #     scope:               ""
+
+sensio_framework_extra:
+    view:
+        annotations: false
+
+fos_rest:
+    routing_loader:
+        default_format: json
+    view:
+        view_response_listener: true

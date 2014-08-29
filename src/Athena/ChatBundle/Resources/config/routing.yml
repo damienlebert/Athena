@@ -5,3 +5,7 @@ default:
 users:
     path:  /users
     defaults: { _controller: AthenaChatBundle:Chat:users }
+
+Conversation:
+    type:     rest
+    resource: Athena\ChatBundle\Controller\ConversationController
