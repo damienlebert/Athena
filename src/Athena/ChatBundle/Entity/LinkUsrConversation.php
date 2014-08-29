@@ -3,6 +3,7 @@
 namespace Athena\ChatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Athena\UserBundle\Entity\User;
 
 /**
  * User
@@ -15,22 +16,22 @@ class LinkUsrConversation
 {
 
     /**
-     * @var integer
+     * @var Conversation
      *
-     * @ORM\Column(name="id_conversation", type="integer")
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation")
+     * @ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation")
      */
-    protected $id_conversation;
+    protected $conversation;
     
     /**
-     * @var integer
+     * @var User
      *
-     * @ORM\Column(name="id_user", type="integer")
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Athena\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      */
-    protected $id_user;
+    protected $user;
     
     /**
      * @var integer
@@ -41,17 +42,17 @@ class LinkUsrConversation
     
     
 	/**
-	 * @return the $id_conversation
+	 * @return the $conversation
 	 */
-	public function getId_conversation() {
-		return $this->id_conversation;
+	public function getConversation() {
+		return $this->conversation;
 	}
 
 	/**
-	 * @return the $id_user
+	 * @return the $user
 	 */
-	public function getId_user() {
-		return $this->id_user;
+	public function getUser() {
+		return $this->user;
 	}
 
 	/**
@@ -62,20 +63,20 @@ class LinkUsrConversation
 	}
 
 	/**
-	 * @param number $id_conversation
+	 * @param \Athena\ChatBundle\Entity\Conversation $conversation
 	 */
-	public function setId_conversation($id_conversation) {
-		$this->id_conversation = $id_conversation;
+	public function setConversation(\Athena\ChatBundle\Entity\Conversation $conversation) {
+		$this->conversation = $conversation;
 		return $this;
 	}
 
 	/**
-	 * @param number $id_user
+	 * @param \Athena\UserBundle\Entity\User $user
 	 */
-	public function setId_user($id_user) {
-		$this->id_user = $id_user;
+	public function setUser(\Athena\UserBundle\Entity\User $user) {
+		$this->user = $user;
 		return $this;
-	} 
+	}
 
 	/**
 	 * @param number $statut
@@ -85,7 +86,4 @@ class LinkUsrConversation
 		return $this;
 	}
 
-    
-    
-    
 }

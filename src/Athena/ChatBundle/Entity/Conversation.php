@@ -21,19 +21,35 @@ class Conversation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id; 
+    protected $id_conversation; 
     
     /**
      * @ORM\ManyToMany(targetEntity="Athena\ChatBundle\Entity\Message", cascade={"persist"})
+     * @ORM\JoinTable(name="conversation_message",
+     *      joinColumns={@ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="id_msg", referencedColumnName="id_msg")}
+     *      )
      */
     protected $messages;
     
+    /**
+     * @ORM\OneToMany(targetEntity="LinkUsrConversation", mappedBy="conversation", cascade={"persist", "remove"})
+     */
+    protected $user_conversation;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	$this->user_conversation = new ArrayCollection();
+    }
     
 	/**
-	 * @return the $id
+	 * @return the $id_conversation
 	 */
-	public function getId() {
-		return $this->id;
+	public function getId_conversation() {
+		return $this->id_conversation;
 	}
 
 	/**
@@ -44,10 +60,17 @@ class Conversation
 	}
 
 	/**
-	 * @param number $id
+	 * @return the $user_conversation
 	 */
-	public function setId($id) {
-		$this->id = $id;
+	public function getUser_conversation() {
+		return $this->user_conversation;
+	}
+
+	/**
+	 * @param number $id_conversation
+	 */
+	public function setId_conversation($id_conversation) {
+		$this->id_conversation = $id_conversation;
 		return $this;
 	}
 
@@ -58,5 +81,28 @@ class Conversation
 		$this->messages = $messages;
 		return $this;
 	}
+
+	/**
+	 * @param field_type $user_conversation
+	 */
+	public function setUser_conversation($user_conversation) {
+		$this->user_conversation = $user_conversation;
+		return $this;
+	}
+
+	/**
+	 * Returns all the users who belong the conversation
+	 * @return array of Conversation
+	 */
+	public function getUsers()
+	{
+		return array_map(
+				function ($usr_conversation) {
+					return $usr_conversation->getUser();
+				},
+				$this->user_conversation->toArray()
+		);
+	}
+
 
 }

@@ -21,7 +21,7 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected $id_msg;
     
     /** 
      * @var string
@@ -40,9 +40,10 @@ class Message
     /**
      * @var integer 
      * 
-     * @ORM\Column(name="usr_msg", type="integer", nullable=false) 
+     * @ORM\ManyToOne(targetEntity="Athena\UserBundle\Entity\User")
+   	 * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      */
-    protected $userId; 
+    protected $id_user; 
     
     /** 
      * @var integer
@@ -53,10 +54,10 @@ class Message
     
     
 	/**
-	 * @return the $id
+	 * @return the $id_msg
 	 */
-	public function getId() {
-		return $this->id;
+	public function getId_msg() {
+		return $this->id_msg;
 	}
 
 	/**
@@ -74,10 +75,10 @@ class Message
 	}
 
 	/**
-	 * @return the $userId
+	 * @return the $id_user
 	 */
-	public function getUserId() {
-		return $this->userId;
+	public function getId_user() {
+		return $this->id_user;
 	}
 
 	/**
@@ -88,10 +89,10 @@ class Message
 	}
 
 	/**
-	 * @param number $id
+	 * @param number $id_msg
 	 */
-	public function setId($id) {
-		$this->id = $id;
+	public function setId_msg($id_msg) {
+		$this->id_msg = $id_msg;
 		return $this;
 	}
 
@@ -112,10 +113,10 @@ class Message
 	}
 
 	/**
-	 * @param number $userId
+	 * @param number $id_user
 	 */
-	public function setUserId($userId) {
-		$this->userId = $userId;
+	public function setId_user($id_user) {
+		$this->id_user = $id_user;
 		return $this;
 	}
 
@@ -128,6 +129,7 @@ class Message
 	}
 
     
+
     
 
 }

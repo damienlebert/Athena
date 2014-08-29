@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Athena\ChatBundle\Entity\Conversation;
 
 /**
  * User
@@ -27,7 +28,7 @@ class User  extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // TODO
+        $this->user_conversation = new ArrayCollection();
     }
 
     /**
@@ -91,6 +92,11 @@ class User  extends BaseUser
      * )
      */
     protected $plainPassword;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Athena\ChatBundle\Entity\LinkUsrConversation", mappedBy="user", cascade={"persist", "remove"})
+     */
+    protected $user_conversation;
 
 
     public function setEmail($email)
@@ -217,5 +223,19 @@ class User  extends BaseUser
         $this->lastName = $lastName;
 
         return $this;
+    }
+    
+    /**
+     * Returns all the user's conversations
+     * @return array of Conversation
+     */
+    public function getConversations()
+    {
+    	return array_map(
+    			function ($usr_conversation) {
+    				return $usr_conversation->getConversation();
+    			},
+    			$this->user_conversation->toArray()
+    	);
     }
 }
