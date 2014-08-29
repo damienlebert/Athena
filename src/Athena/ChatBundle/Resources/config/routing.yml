@@ -1,11 +1,15 @@
-default:
+﻿default:
     path:  /
     defaults: { _controller: AthenaChatBundle:Chat:welcome }
     
 users:
     path:  /users
     defaults: { _controller: AthenaChatBundle:Chat:users }
-
+    
 Conversation:
     type:     rest
-    resource: Athena\ChatBundle\Controller\ConversationController
+    resource: Athen\ChatBundle\Controller\ConversationController
+    
+sandbox:
+    path: /sandbox
+    defaults: {_controller: AthenaChatBundle:Sandbox:welcome }

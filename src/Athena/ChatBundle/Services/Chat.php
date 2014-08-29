@@ -1,32 +1,56 @@
-<?php
+ï»¿<?php
 namespace Athena\ChatBundle\Services;
+
+use Doctrine\ORM\EntityManager;
 
 /**
  * Service Chat
  * 
  * 
- * @author Pierre/Damien
+ * @author PierreVassoilles/DamienLebert
  */
 class Chat
 {
 	
+	protected $em;
+	
 	/**
-	 * Récupère toutes les conversations d'un utilisateur
+	 * Constructeur
+	 * @param EntityManager $em
+	 */
+	public function __construct(EntityManager $em)
+	{
+		$this->em = $em;
+	}
+	
+	/**
+	 * RÃ©cupÃ¨re toutes les conversations d'un utilisateur
 	 * @param integer $userId
 	 */
 	public function fetchAllConversations($userId)
 	{
+		if(0 === (int) $userId){
+			throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
+		}
 		
+		return $this->em->getRepository('AthenaUserBundle:User')
+				 ->find(array('id' => $userId))->getConversations();	
 	}
 	
 	/**
-	 * Récupère la conversation dont l'identifiant est en paramètre
+	 * RÃ©cupÃ¨re la conversation dont l'identifiant est en paramÃ¨tre
 	 * @param integer $id
 	 */
 	public function findConversation($id)
 	{
+		if(0 === (int) $id){
+			throw new \InvalidArgumentException("La conversation n'existe pas.");
+		}
 		
-	}
+		return $this->em->getRepository('AthenaChatBundle:Conversation')
+						->find($id);
+		
+	} 
 	
 	/**
 	 * Ajoute une conversation entre $userId et $userOther
@@ -39,7 +63,7 @@ class Chat
 	}
 	
 	/**
-	 * Désactive la conversation $id
+	 * DÃ©sactive la conversation $id
 	 * @param integer $id
 	 */
 	public function disableConversation($id)
@@ -57,7 +81,7 @@ class Chat
 	}
 	
 	/**
-	 * Ajoute un message à la conversation $idConversation
+	 * Ajoute un message Ã  la conversation $idConversation
 	 * @param integer $idConversation
 	 * @param string $content
 	 */
@@ -67,7 +91,7 @@ class Chat
 	}
 	
 	/**
-	 * Récupère tous les messages de la conversation $idConversation
+	 * RÃ©cupÃ¨re tous les messages de la conversation $idConversation
 	 * @param integer $idConversation
 	 */
 	public function fetchAllMessages($idConversation)

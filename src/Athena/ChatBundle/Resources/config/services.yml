@@ -1,4 +1,7 @@
-parameters:
+﻿parameters:
 #    athena_chat.example.class: Athena\ChatBundle\Example
 
 services:
+    athena_chat.chat:
+        class: Athena\ChatBundle\Services\Chat
+        arguments: [ @doctrine.orm.entity_manager ]
