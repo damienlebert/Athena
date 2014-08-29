@@ -75,7 +75,7 @@ class LinkUsrConversation
 	public function setId_user($id_user) {
 		$this->id_user = $id_user;
 		return $this;
-	}
+	} 
 
 	/**
 	 * @param number $statut

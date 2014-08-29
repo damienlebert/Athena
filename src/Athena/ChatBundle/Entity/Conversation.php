@@ -21,7 +21,7 @@ class Conversation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected $id; 
     
     /**
      * @ORM\ManyToMany(targetEntity="Athena\ChatBundle\Entity\Message", cascade={"persist"})

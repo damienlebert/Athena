@@ -42,7 +42,7 @@ class Message
      * 
      * @ORM\Column(name="usr_msg", type="integer", nullable=false) 
      */
-    protected $userId;
+    protected $userId; 
     
     /** 
      * @var integer

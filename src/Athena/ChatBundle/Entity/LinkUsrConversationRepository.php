@@ -12,4 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class LinkUsrConversationRepository extends EntityRepository
 {
-}
+} 
