@@ -8,7 +8,7 @@ users:
     
 Conversation:
     type:     rest
-    resource: Athen\ChatBundle\Controller\ConversationController
+    resource: Athena\ChatBundle\Controller\ConversationController
     
 sandbox:
     path: /sandbox
