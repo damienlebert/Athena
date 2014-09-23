@@ -69,7 +69,7 @@
     </div>
 
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-	<div class="navbar navbar-default navbar-fixed-bottom navbar-conversation" style="overflow:hidden;">
+	<div class="navbar navbar-default navbar-fixed-bottom navbar-conversation" style="overflow:visible;">
 	    <div class="container panel-conversation">
 	            <div class="table-users">
 	                <div class="row blue-text panel-head" onClick="$('#users').toggle('medium');">
@@ -83,7 +83,7 @@
 	                </div>
 	                <div class="row">
 	                    <div class='user-td tableau-users'>
-	                                <input class="form-control input-sm" style="border:0;" type="text" name="recherche" id="recherche" placeholder="Rechercher" width="100%" style="width:60%" onkeyup="rechercheUser($(this).val())" />
+	                    	<input class="form-control input-sm search-field" style="border:0;" type="text" name="recherche" id="recherche" placeholder="Rechercher" width="100%" style="width:60%" onkeyup="rechercheUser($(this).val())" />
 	                    </div>
 	                </div>
 	            </div>
