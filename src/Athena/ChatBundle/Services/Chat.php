@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 namespace Athena\ChatBundle\Services;
 
 use Doctrine\ORM\EntityManager;
