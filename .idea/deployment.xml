@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="vps">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Athena">
     <serverData>
-      <paths name="VPS">
+      <paths name="Athena">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
-        </serverdata>
-      </paths>
-      <paths name="vps">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
-          </mappings>
+          <excludedPaths>
+            <excludedPath path="/vendor" />
+            <excludedPath path="/app/cache" />
+            <excludedPath path="/web/bundles" />
+            <excludedPath path="/src/Athena/ChatBundle/Resources/public/vendor" />
+            <excludedPath local="true" path="$PROJECT_DIR$/src/Athena/ChatBundle/Resources/public/images" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
 
