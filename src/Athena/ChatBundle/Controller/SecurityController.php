@@ -16,7 +16,7 @@ class SecurityController extends Controller
     {
         // Si le visiteur est déjà identifié, on le redirige vers l'accueil
         if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-          return $this->redirect($this->generateUrl('sdzblog_accueil'));
+          return $this->redirect($this->generateUrl('AthenaChatBundle_welcome'));
         }
 
         $request = $this->getRequest();
