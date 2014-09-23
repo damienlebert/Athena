@@ -4,9 +4,19 @@ namespace Athena\ChatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Athena\UserBundle\Entity\UserRepository;
+use Athena\ChatBundle\Services\Chat;
 
 class ChatController extends Controller
 {
+    
+    protected $chatSvc;
+    
+    public function preExecute()
+    {
+        // Le code écrit ici sera executé avant chacune des actions de ce controlleur.
+        
+    }
+    
     public function welcomeAction()
     {
         return $this->render('AthenaChatBundle:Pages:index.html.twig');
@@ -14,13 +24,8 @@ class ChatController extends Controller
     
     
     public function usersAction()
-    {
-    	
-    	$liste_users = $this->getDoctrine()
-                         ->getManager()
-                         ->getRepository('AthenaUserBundle:User')
-                         ->findAll();
-    	
-    	return $this->render('AthenaChatBundle:Pages:users.html.twig', array('msg' => $liste_users));
+    { 	
+        $this->chatSvc = new Chat($this->getDoctrine()->getManager());
+    	return $this->render('AthenaChatBundle:Pages:users.html.twig', array('msg' => $this->chatSvc->fetchAllUsers()));
     }
 }

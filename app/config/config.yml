@@ -114,3 +114,9 @@ fos_rest:
         default_format: json
     view:
         view_response_listener: true
+        
+services:
+  controller.pre_execute_listener:
+    class: Athena\ChatBundle\Listener\ControllerListener
+    tags:
+      -  { name: kernel.event_listener, event: kernel.controller, method: onCoreController }

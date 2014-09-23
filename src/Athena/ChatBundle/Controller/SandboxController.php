@@ -12,7 +12,7 @@ class SandboxController extends Controller
     	
     	$service = $this->container->get('athena_chat.chat');
     	/*echo "<pre>";
-    	Debug::dump($service->fetchAllConversations(3));
+    	\Doctrine\Common\Util\Debug::dump($service->fetchAllConversations(3));
     	echo "</pre>";exit;*/
     	return $this->render('AthenaChatBundle:Pages:sandbox.html.twig', array('test' => $service->fetchAllConversations(3)));
     } 

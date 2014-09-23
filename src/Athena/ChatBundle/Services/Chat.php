@@ -24,6 +24,26 @@ class Chat
 	}
 	
 	/**
+	 * Récupère tous les utilisateurs
+	 */
+	public function fetchAllUsers()
+	{
+	    $liste_users = $this->em->getRepository('AthenaUserBundle:User')
+            	       ->findAll();
+	    
+	    return $liste_users;
+	}
+	
+	/**
+	 * Recherche des utilisateurs à partir du nom, du prénom ou du mail
+	 * @param unknown $keyword
+	 */
+	public function findUsers($keyword)
+	{
+	    
+	}
+	
+	/**
 	 * Récupère toutes les conversations d'un utilisateur
 	 * @param integer $userId
 	 */
