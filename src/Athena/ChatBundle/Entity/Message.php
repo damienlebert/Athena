@@ -3,6 +3,7 @@
 namespace Athena\ChatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Athena\UserBundle\Entity\User;
 
 /**
  * User
@@ -105,7 +106,7 @@ class Message
 	}
 
 	/**
-	 * @param \Athena\ChatBundle\Entity\date $date
+	 * @param \DateTime $date
 	 */
 	public function setDate($date) {
 		$this->date = $date;
@@ -113,9 +114,9 @@ class Message
 	}
 
 	/**
-	 * @param number $id_user
+	 * @param User $id_user
 	 */
-	public function setId_user($id_user) {
+	public function setId_user(User $id_user) {
 		$this->id_user = $id_user;
 		return $this;
 	}
