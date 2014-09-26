@@ -4,16 +4,19 @@ namespace Athena\ChatBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Routing\ClassResourceInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class ConversationController implements ClassResourceInterface
+class ConversationController extends Controller implements ClassResourceInterface
 {
     /**
+     * @View()
      * Get all conversation
      * /conversation
      */
     public function cgetAction()
     {
-        return array('lalalalalala');
+        $service = $this->get('athena_chat.chat');
+        return $service->fetchAllConversations(22);
     }
 
     /**
