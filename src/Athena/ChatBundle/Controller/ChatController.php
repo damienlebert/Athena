@@ -14,7 +14,7 @@ class ChatController extends Controller
     public function preExecute()
     {
         // Le code écrit ici sera executé avant chacune des actions de ce controlleur.
-        
+        $this->chatSvc = new Chat($this->getDoctrine()->getManager());
     }
     
     public function welcomeAction()
