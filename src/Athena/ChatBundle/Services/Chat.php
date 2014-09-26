@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Athena\ChatBundle\Entity\LinkUsrConversation;
 use Athena\ChatBundle\Entity\Message;
 use Athena\UserBundle\Entity\User;
+use Athena\ChatBundle\Entity\Conversation;
 
 /**
  * Service Chat
@@ -85,13 +86,37 @@ class Chat
 	} 
 	
 	/**
-	 * Ajoute une conversation entre $userId et $userOther
-	 * @param integer $userId
+	 * Ajoute une conversation entre $userConnecte (objet User) et $userOther (id_user/number)
+	 * @param User $userConnecte
 	 * @param integer $userOther
 	 */
-	public function addConversation($userId, $userOther)
+	public function addConversation($userConnecte, $userOther)
 	{
+	    if(0 === (int) $userOther){
+	        throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
+	    }	    
+	    
+		$conversation = new Conversation();
+		$this->em->persist($conversation);
+		$this->em->flush();
+
+		$linkConversationUserConnecte = new LinkUsrConversation();
+		$linkConversationUserConnecte->setStatut(1)
+		                             ->setConversation($conversation)
+		                             ->setUser($userConnecte);
+		//Debug
+		//\Doctrine\Common\Util\Debug::dump($linkConversationUserConnecte);
 		
+		$linkConversationUserOther = new LinkUsrConversation();
+		$linkConversationUserOther->setStatut(1)
+		                          ->setConversation($conversation)
+		                          ->setUser($this->em->getRepository('AthenaUserBundle:User')->find($userOther));
+		//Debug
+		//\Doctrine\Common\Util\Debug::dump($linkConversationUserOther);
+		
+		$this->em->persist($linkConversationUserConnecte);
+		$this->em->persist($linkConversationUserOther);
+		$this->em->flush();
 	}
 	
 	/**
@@ -178,7 +203,13 @@ class Chat
 	 */
 	public function fetchAllMessages($idConversation)
 	{
-		
+	    if(0 === (int) $idConversation){
+	        throw new \InvalidArgumentException("La conversation n'existe pas.");
+	    }
+	    
+	    return $this->em
+	                ->getRepository('AthenaChatBundle:Message')
+	                ->findAll(array("id_conversation" => $idConversation));
 	}
 	
 	
