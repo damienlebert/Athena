@@ -186,7 +186,7 @@ class Chat
 	    if(0 === (int) $idConversation){
 	        throw new \InvalidArgumentException("La conversation n'existe pas.");
 	    }
-	    
+	     
 		$message = new Message();
 		$message->setContenu($content)
 		        ->setConversation($idConversation)
