@@ -20,7 +20,6 @@ class ControllerListener
                 // On vérifie que le controller implémente la méthode preExecute
                 if(method_exists($controller,'preExecute'))
                 {
-                    var_dump("Hello !");exit;
                     $controller->preExecute();
                 }
             }
