@@ -42,7 +42,7 @@ class Conversation
      */
     public function __construct()
     {
-    	$this->user_conversation = new ArrayCollection();
+    	$this->user_conversation = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
 	/**
