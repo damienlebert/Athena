@@ -12,12 +12,12 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    {% stylesheets filter=''
-    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css'
-    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/css/bootstrap-theme.min.css'
-    '@AthenaChatBundle/Resources/public/css/fonts/typicons.min.css'
-    '@AthenaChatBundle/Resources/public/css/jquery.mCustomScrollbar.css'
-    '@AthenaChatBundle/Resources/public/css/main.css' %}
+    {% stylesheets filter='cssrewrite'
+    'bundles/athenachat/vendor/bootstrap/dist/css/bootstrap.min.css'
+    'bundles/athenachat/vendor/bootstrap/dist/css/bootstrap-theme.min.css'
+    'bundles/athenachat/css/fonts/typicons.min.css'
+    'bundles/athenachat/css/jquery.mCustomScrollbar.css'
+    'bundles/athenachat/css/main.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 
