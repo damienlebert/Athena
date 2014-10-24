@@ -28,6 +28,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+      nodeUrl: "http://athena.example.com:3000"
 
 # Assetic Configuration
 assetic:
