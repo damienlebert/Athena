@@ -32,11 +32,17 @@
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <script src="{{ nodeUrl }}/socket.io/socket.io.js"></script>
     <script>
+
         var socket;
         function getUsernames(){
             socket.emit('getUsernames', '{{ app.user.id }}');
         }
         jQuery(function($){
+
+            $.get('/hello/coucou', function(data){
+               console.log(data);
+            });
+
 
             socket = io.connect('{{ nodeUrl }}');
             //var $users = $('#users');

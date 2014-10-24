@@ -1,3 +1,7 @@
 athena_ajax_homepage:
     path:     /hello/{name}
     defaults: { _controller: AthenaAjaxBundle:Default:index }
+
+Conversation:
+    type:     rest
+    resource: Athena\AjaxBundle\Controller\DefaultController

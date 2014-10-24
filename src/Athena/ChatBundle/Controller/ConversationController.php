@@ -11,16 +11,16 @@ class ConversationController extends Controller implements ClassResourceInterfac
     /**
      * @View()
      * Get all conversation
-     * /conversation
+
      */
     public function cgetAction()
     {
         $service = $this->get('athena_chat.chat');
-        return $service->fetchAllConversations(22);
+        return $service->fetchAllConversations(5);
     }
 
     /**
-     * /conversations/{id}
+
      */
     public function getAction($slug)
     {
