@@ -21,7 +21,110 @@
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 
+    {% javascripts '@AthenaChatBundle/Resources/public/vendor/jquery/dist/jquery.min.js'
+    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/js/bootstrap.min.js'
+    '@AthenaChatBundle/Resources/public/vendor/modernizr/modernizr.js'
+    '@AthenaChatBundle/Resources/public/js/main.js'
+    '@AthenaChatBundle/Resources/public/js/jquery.mCustomScrollbar.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     <script src="{{ nodeUrl }}/socket.io/socket.io.js"></script>
+    <script>
+        var socket;
+        function getUsernames(){
+            socket.emit('getUsernames', '{{ app.user.id }}');
+        }
+        jQuery(function($){
+
+            socket = io.connect('{{ nodeUrl }}');
+            //var $users = $('#users');
+            var $messageForm = $('#send-message');
+            var $messageBox = $('#message');
+            var $chat = $('#chat');
+
+            //$nickForm.submit(function(e){
+            //e.preventDefault();
+            socket.emit('new user', '{{ app.user.id }}');
+            //});
+
+
+
+            socket.on('usernames', function(data){
+                //console.log('im here');
+                updateConnected(data);
+            });
+
+            $messageForm.submit(function(e){
+                e.preventDefault();
+                socket.emit('send message', $messageBox.val(), function(data){
+                    data = data.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+                    $chat.append('<span class="error">' + data + "</span><br/>");
+                });
+                $messageBox.val('');
+            });
+
+            socket.on('new message', function(data){
+                if(data['from'] == '{{ app.user.id }}'){
+                    addMessage(data['to'], data['msg'], "", true, arrayAvatars['userConnecte']);
+                }else{
+                    var nomFrom = $("#contact-"+data['from']).html().split('<')[0];
+                    ajouterConversation(data['from'], nomFrom);
+                    addMessage(data['from'], data['msg'], "", false, arrayAvatars[data['from']]);
+                    $('#messagesPanel-'+data['from']).animate({scrollTop:60000}, 'fast');
+                }
+            });
+
+            $(document).on("keypress", $("input"), function(e){
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if(code == 13){
+                    //Récupération des données
+                    var message = $(":focus").val();
+                    var contact = $(":focus").attr("id").substr(8);
+
+                    //Faire envoi message
+                    var SendData = {from:'{{ app.user.id }}',to:contact,msg:message};
+
+
+                    $('#messagesPanel-'+contact).animate({scrollTop:60000}, 'fast');
+                    //Ajouter le message dans la base
+                    /*$.ajax({
+                        type: "GET",
+                        url: "managers/addMessage.php",
+                        data: {userConnecte: '{{ app.user.id }}', userOther: contact, message: message},
+                        success:function(){
+                            socket.emit('send message', SendData);
+                        },
+                        error:function(xhr, texte, error){
+                            alert("Vous devez vous connecter pour envoyer un message !");
+                        }
+                    });*/
+                    //Effacer le champ massage
+                    $(":focus").val("");
+                }else{
+                    var contact = $(":focus").attr("id").substr(8);
+                    var SendData = {from:'{{ app.user.id }}',to:contact};
+                    socket.emit('typing', SendData);
+                }
+            });
+            socket.on('otherTyping', function(data){
+                if(data['isTyping'] && $("#" + data["from"] + "-typing").size() === 0){
+                    var msgTyping = "<div id='" + data["from"] + "-typing' style='position:relative; bottom:0; z-index:10000; background-color:white;'>" + data["from"] + " est en train d'écrire...</div>";
+                    $("#messagesPanel-"+data['from']).append(msgTyping).animate({scrollTop:60000}, 'fast');
+                    $("#logoBar-"+data['from']).attr("class", "typcn typcn-message-typing");
+                    $("#logoConv-"+data['from']).attr("class", "typcn typcn-message-typing");
+                    setTimeout(function(){
+                        $("#" + data["from"] + "-typing").remove();
+                        $("#logoBar-"+data['from']).attr("class", "typcn typcn-message");
+                        $("#logoConv-"+data['from']).attr("class", "typcn typcn-message");
+                    },1000);
+                }
+            });
+        });
+
+    </script>
+
+
 </head>
 <body>
     <!--[if lt IE 7]>
@@ -100,13 +203,7 @@
        </footer>
 {% endif %}
 
-    {% javascripts '@AthenaChatBundle/Resources/public/vendor/jquery/dist/jquery.min.js'
-    '@AthenaChatBundle/Resources/public/vendor/bootstrap/dist/js/bootstrap.min.js'
-    '@AthenaChatBundle/Resources/public/vendor/modernizr/modernizr.js'
-    '@AthenaChatBundle/Resources/public/js/main.js'
-    '@AthenaChatBundle/Resources/public/js/jquery.mCustomScrollbar.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+
        <script type="text/javascript">
               $("#users").mCustomScrollbar({
                    theme:"minimal-dark"
