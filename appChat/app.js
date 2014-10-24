@@ -1,29 +1,72 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var io = require('socket.io');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+
+//Liste des sokets utilisateurs
+userList = {};
+
+io.on('connection', function(socket){
+
+    function updateNicknames(){
+        io.sockets.emit('usernames', Object.keys(users));
+    }
+
+    socket.on('new user', function(data){
+        // if user already connected
+        socket.nickname = data;
+        // Add socket to user array
+        users[socket.nickname] = socket;
+        updateNicknames();
+    });
+
+    socket.on('getUsernames', function(data){
+        users[data].emit('usernames', Object.keys(users));
+    });
+
+    socket.on('send message', function(data, callback){
+        var msg = data['msg'].trim().replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        console.log('after trimming message is: ' + msg);
+        var to = data['to'];
+        var fromUser = data['from'];
+        if(to in users && fromUser in users){
+            users[to].emit('new message', {msg: msg, from: fromUser, to:to});
+            users[fromUser].emit('new message', {msg: msg, from: fromUser, to:to});
+            console.log('message sent is: ' + msg);
+            console.log('Whisper!');
+        }
+    });
+
+    socket.on('disconnect', function(data){
+        if(!socket.nickname) return;
+        delete users[socket.nickname];
+        updateNicknames();
+    });
+
+    socket.on('typing', function(data){
+        var to = data['to'];
+        var fromUser = data['from'];
+        if(to in users && fromUser in users){
+            users[to].emit('otherTyping', {isTyping: true, from: fromUser});
+        }
+    });
+
+
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
