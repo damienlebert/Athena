@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="Athena">
+  <component name="PublishConfigData" autoUpload="Always" serverName="/" showExcludedInSync="true">
     <serverData>
-      <paths name="Athena">
+      <paths name="/">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
-            <excludedPath path="/vendor" />
             <excludedPath path="/app/cache" />
+            <excludedPath path="/app/logs" />
             <excludedPath path="/web/bundles" />
+            <excludedPath path="/vendor" />
+            <excludedPath path="/appChat/node_modules" />
             <excludedPath path="/src/Athena/ChatBundle/Resources/public/vendor" />
-            <excludedPath local="true" path="$PROJECT_DIR$/src/Athena/ChatBundle/Resources/public/images" />
           </excludedPaths>
         </serverdata>
       </paths>
