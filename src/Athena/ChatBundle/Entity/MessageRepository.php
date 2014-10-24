@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class MessageRepository extends EntityRepository
 {
+
+    /**
+     * Récupère tous les messages de la conversation $idConversation
+     * @param integer $idConversation
+     */
+    public function fetchAllMessages($idConversation)
+    {
+        if(0 === (int) $idConversation){
+            throw new \InvalidArgumentException("La conversation n'existe pas.");
+        }
+
+        return $this->findAll(array("id_conversation" => $idConversation));
+    }
+
 }

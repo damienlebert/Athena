@@ -12,8 +12,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
-	
 
+    /**
+     * Récupère tous les utilisateurs
+     */
+    public function fetchAllUsers($idConnected)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.id != :id')
+            ->setParameter('id', $idConnected)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Recherche des utilisateurs à partir du nom, du prénom ou du mail
+     * @param unknown $keyword
+     */
+    public function findUsers($keyword)
+    {
+        return $this->createQueryBuilder('u')
+                            ->where('u.username like :keyword')
+                            ->orWhere('u.firstName like :keyword')
+                            ->orWhere('u.lastName like :keyword')
+                            ->setParameter('keyword', '%'.$keyword.'%')
+                            ->getQuery()
+                            ->getResult();
+    }
+
+
+    /**
+     * Récupère toutes les conversations d'un utilisateur
+     * @param integer $userId
+     */
+    public function fetchAllConversations($userId)
+    {
+        if(0 === (int) $userId){
+            throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
+        }
+
+        return $this->find(array('id' => $userId))
+                    ->getConversations();
+    }
 	
 	
 	

@@ -30,12 +30,11 @@ class Chat
 	/**
 	 * Récupère tous les utilisateurs
 	 */
-	public function fetchAllUsers()
+	public function fetchAllUsers($idConnected)
 	{
-	    $liste_users = $this->em->getRepository('AthenaUserBundle:User')
-            	       ->findAll();
-	    
-	    return $liste_users;
+        return $this->em
+                    ->getRepository('AthenaUserBundle:User')
+                    ->fetchAllUsers($idConnected);
 	}
 	
 	/**
@@ -44,16 +43,9 @@ class Chat
 	 */
 	public function findUsers($keyword)
 	{
-	    $liste_users = $this->em->getRepository('AthenaUserBundle:User')
-	                   ->createQueryBuilder('u')
-                       ->where('u.username like :keyword')
-                       ->orWhere('u.firstName like :keyword')
-                       ->orWhere('u.lastName like :keyword')
-                       ->setParameter('keyword', '%'.$keyword.'%')
-                       ->getQuery()
-                       ->getResult();
-	     
-	    return $liste_users;
+	    return $this->em
+                    ->getRepository('AthenaUserBundle:User')
+                    ->findUsers($keyword);
 	}
 	
 	/**
@@ -66,8 +58,10 @@ class Chat
 			throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
 		}
 		
-		return $this->em->getRepository('AthenaUserBundle:User')
-				 ->find(array('id' => $userId))->getConversations();	
+		return $this->em
+                    ->getRepository('AthenaUserBundle:User')
+                    ->fetchAllConversations($userId);
+
 	}
 	
 	/**
@@ -80,44 +74,45 @@ class Chat
 			throw new \InvalidArgumentException("La conversation n'existe pas.");
 		}
 		
-		return $this->em->getRepository('AthenaChatBundle:Conversation')
-						->find($id);
+		return $this->em
+                    ->getRepository('AthenaChatBundle:Conversation')
+                    ->findConversation($id);
 		
-	} 
-	
-	/**
-	 * Ajoute une conversation entre $userConnecte (objet User) et $userOther (id_user/number)
-	 * @param User $userConnecte
-	 * @param integer $userOther
-	 */
-	public function addConversation($userConnecte, $userOther)
-	{
-	    if(0 === (int) $userOther){
-	        throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
-	    }	    
-	    
-		$conversation = new Conversation();
-		$this->em->persist($conversation);
-		$this->em->flush();
-
-		$linkConversationUserConnecte = new LinkUsrConversation();
-		$linkConversationUserConnecte->setStatut(1)
-		                             ->setConversation($conversation)
-		                             ->setUser($userConnecte);
-		//Debug
-		//\Doctrine\Common\Util\Debug::dump($linkConversationUserConnecte);
-		
-		$linkConversationUserOther = new LinkUsrConversation();
-		$linkConversationUserOther->setStatut(1)
-		                          ->setConversation($conversation)
-		                          ->setUser($this->em->getRepository('AthenaUserBundle:User')->find($userOther));
-		//Debug
-		//\Doctrine\Common\Util\Debug::dump($linkConversationUserOther);
-		
-		$this->em->persist($linkConversationUserConnecte);
-		$this->em->persist($linkConversationUserOther);
-		$this->em->flush();
 	}
+
+    /**
+     * Ajoute une conversation entre $userConnecte (objet User) et $userOther (id_user/number)
+     * @param User $userConnecte
+     * @param integer $userOther
+     */
+    public function addConversation($userConnecte, $userOther)
+    {
+        if(0 === (int) $userOther){
+            throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
+        }
+
+        $conversation = new Conversation();
+        $this->em->persist($conversation);
+        $this->em->flush();
+
+        $linkConversationUserConnecte = new LinkUsrConversation();
+        $linkConversationUserConnecte->setStatut(1)
+            ->setConversation($conversation)
+            ->setUser($userConnecte);
+        //Debug
+        //\Doctrine\Common\Util\Debug::dump($linkConversationUserConnecte);
+
+        $linkConversationUserOther = new LinkUsrConversation();
+        $linkConversationUserOther->setStatut(1)
+            ->setConversation($conversation)
+            ->setUser($this->em->getRepository('AthenaUserBundle:User')->find($userOther));
+        //Debug
+        //\Doctrine\Common\Util\Debug::dump($linkConversationUserOther);
+
+        $this->em->persist($linkConversationUserConnecte);
+        $this->em->persist($linkConversationUserOther);
+        $this->em->flush();
+    }
 	
 	/**
 	 * Désactive la conversation $id
@@ -209,7 +204,7 @@ class Chat
 	    
 	    return $this->em
 	                ->getRepository('AthenaChatBundle:Message')
-	                ->findAll(array("id_conversation" => $idConversation));
+	                ->fetchAllMessages($idConversation);
 	}
 	
 	

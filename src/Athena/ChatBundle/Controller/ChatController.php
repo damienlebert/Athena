@@ -26,6 +26,9 @@ class ChatController extends Controller
     public function usersAction()
     { 	
         $this->chatSvc = new Chat($this->getDoctrine()->getManager());
-    	return $this->render('AthenaChatBundle:Pages:users.html.twig', array('msg' => $this->chatSvc->fetchAllUsers()));
+
+        $connectedUser = $this->get('security.context')->getToken()->getUser();
+
+    	return $this->render('AthenaChatBundle:Pages:users.html.twig', array('msg' => $this->chatSvc->fetchAllUsers($connectedUser->getId())));
     }
 }

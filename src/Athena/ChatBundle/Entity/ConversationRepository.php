@@ -12,4 +12,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConversationRepository extends EntityRepository
 {
+
+    /**
+     * Récupère la conversation dont l'identifiant est en paramètre
+     * @param integer $id
+     */
+    public function findConversation($id)
+    {
+        if(0 === (int) $id){
+            throw new \InvalidArgumentException("La conversation n'existe pas.");
+        }
+
+        return $this->find($id);
+
+    }
+
+
+
+
 }
