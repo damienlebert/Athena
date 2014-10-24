@@ -29,6 +29,7 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <script src="{{ nodeUrl }}/socket.io/socket.io.js"></script>
     <script>
         var socket;
@@ -123,7 +124,7 @@
         });
 
     </script>
-
+{% endif %}
 
 </head>
 <body>
@@ -199,7 +200,7 @@
 {% else %}
 	</div>
        <footer class="bs-footer" role="contentinfo">
-           <p class="indentH4">IP-FORMATION &copy; ATHENA Company 2013 - Pierre VASSOILLES & Damien LEBERT</p>
+           <p class="indentH4">IP-FORMATION &copy; ATHENA Company 2013 - Pierre VASSOILLES & Damien LEBERT TEST</p>
        </footer>
 {% endif %}
 
