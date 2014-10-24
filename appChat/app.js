@@ -1,7 +1,8 @@
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
-var io = require('socket.io');
+var debug = require('debug')('appChat');
+
 
 var app = express();
 
@@ -10,6 +11,8 @@ app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
 });
+
+var io = require('socket.io').listen(server);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
