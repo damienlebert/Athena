@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Athena\ChatBundle\AthenaChatBundle(),
             new Athena\UserBundle\AthenaUserBundle(),
+            new Athena\AjaxBundle\AthenaAjaxBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

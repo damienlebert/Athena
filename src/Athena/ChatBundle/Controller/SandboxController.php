@@ -14,6 +14,19 @@ class SandboxController extends Controller
     	/*echo "<pre>";
     	\Doctrine\Common\Util\Debug::dump($service->fetchAllConversations(3));
     	echo "</pre>";exit;*/
-    	return $this->render('AthenaChatBundle:Pages:sandbox.html.twig', array('test' => $service->fetchAllConversations(3)));
+    	
+    	/*echo "<pre>";
+    	 \Doctrine\Common\Util\Debug::dump($service->findUsers('DAM'));
+    	 echo "</pre>";exit;*/
+    	
+    	$user = $this->get('security.context')->getToken()->getUser();
+    	//$service->addMessage(1, $user, "Hello world!!!");
+    	//$service->addConversation($user, 2);
+    	echo "<pre>";
+    	\Doctrine\Common\Util\Debug::dump($service->fetchAllMessages(1));
+    	echo "</pre>";
+    	//var_dump($service->enableConversation(1, 3));exit;
+    	
+    	return $this->render('AthenaChatBundle:Pages:sandbox.html.twig', array('test' => $service->findUsers('pierre')));
     } 
 }

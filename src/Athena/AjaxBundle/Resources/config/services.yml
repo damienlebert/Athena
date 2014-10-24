@@ -1,0 +1,7 @@
+parameters:
+#    athena_ajax.example.class: Athena\AjaxBundle\Example
+
+services:
+#    athena_ajax.example:
+#        class: %athena_ajax.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

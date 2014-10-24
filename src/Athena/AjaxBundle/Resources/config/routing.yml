@@ -1,0 +1,3 @@
+athena_ajax_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: AthenaAjaxBundle:Default:index }
