@@ -48,8 +48,9 @@ class Message
     
     /** 
      * @var integer
-     * 
-     * @ORM\Column(name="id_conversation", type="integer", nullable=false) 
+     *
+     * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation")
+     * @ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation", nullable=false)
      */
     protected $conversation;
     

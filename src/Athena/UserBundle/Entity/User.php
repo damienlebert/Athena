@@ -7,6 +7,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Athena\ChatBundle\Entity\Conversation;
@@ -231,11 +232,14 @@ class User  extends BaseUser
      */
     public function getConversations()
     {
+
     	return array_map(
     			function ($usr_conversation) {
     				return $usr_conversation->getConversation();
     			},
     			$this->user_conversation->toArray()
     	);
+
     }
+
 }

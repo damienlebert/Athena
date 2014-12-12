@@ -1,5 +1,5 @@
 	{% for user in msg %}   	
-    	<li id='contact-{{ user.id }}' class='user-td' onClick='ajouterConversation("{{ user.id }}", "{{ user.lastname }} {{ user.firstname }}");'>
+    	<li id='contact-{{ user.id }}' class='user-td' data-user-id="{{ user.id }}" data-user-name="{{ user.lastname }} {{ user.firstname }}">
     		<img src="{{ asset('bundles/athenachat/images/avatars/avatar.png') }}" class="avatar-users"/>
     			{{ user.lastname }} {{ user.firstname }}
     			<span class='glyphicon glyphicon-remove-circle droite non-connecte'>

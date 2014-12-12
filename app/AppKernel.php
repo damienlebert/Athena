@@ -19,7 +19,7 @@ class AppKernel extends Kernel
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle($this),
             new Athena\ChatBundle\AthenaChatBundle(),
             new Athena\UserBundle\AthenaUserBundle(),
             new Athena\AjaxBundle\AthenaAjaxBundle(),

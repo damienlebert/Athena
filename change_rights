@@ -1,0 +1,5 @@
+php app/console cache:clear
+php app/console cache:clear --env=prod
+php app/console assets:install --symlink
+chmod -R 775 ./
+chown www:www-data -R ./

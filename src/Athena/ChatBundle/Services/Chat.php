@@ -57,11 +57,10 @@ class Chat
 		if(0 === (int) $userId){
 			throw new \InvalidArgumentException("L'utilisateur n'existe pas.");
 		}
-		
-		return $this->em
-                    ->getRepository('AthenaUserBundle:User')
-                    ->fetchAllConversations($userId);
 
+        return $this->em
+            ->getRepository('AthenaUserBundle:User')
+            ->fetchAllConversations($userId);
 	}
 	
 	/**
@@ -79,6 +78,18 @@ class Chat
                     ->findConversation($id);
 		
 	}
+
+
+    public function findConversationByTwoUsers(User $connectedUser, $idOtherUser)
+    {
+        $conversation = $this->em
+            ->getRepository('AthenaChatBundle:Conversation')
+            ->findConversationByTwoUsers($connectedUser->getId(), $idOtherUser);
+
+        //Si on a une conversation, on la retour, sinon on la crée et on la retourne
+        return ($conversation != null ? $conversation : $this->addConversation($connectedUser, $idOtherUser));
+
+    }
 
     /**
      * Ajoute une conversation entre $userConnecte (objet User) et $userOther (id_user/number)
@@ -112,6 +123,8 @@ class Chat
         $this->em->persist($linkConversationUserConnecte);
         $this->em->persist($linkConversationUserOther);
         $this->em->flush();
+
+        return $conversation;
     }
 	
 	/**

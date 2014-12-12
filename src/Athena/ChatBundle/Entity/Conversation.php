@@ -24,11 +24,8 @@ class Conversation
     protected $id_conversation; 
     
     /**
-     * @ORM\ManyToMany(targetEntity="Athena\ChatBundle\Entity\Message", cascade={"persist"})
-     * @ORM\JoinTable(name="conversation_message",
-     *      joinColumns={@ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="id_msg", referencedColumnName="id_msg")}
-     *      )
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="conversation", cascade={"persist", "remove"})
+     *
      */
     protected $messages;
     

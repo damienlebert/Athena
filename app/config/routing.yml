@@ -39,3 +39,11 @@ google_login:
 athena_chat:
     resource: "@AthenaChatBundle/Resources/config/routing.yml"
     prefix:   /
+
+#athena_ajax:
+#    resource: "@AthenaAjaxBundle/Resources/config/routing.yml"
+#    type: yml
+
+Ajax:
+    type:     rest
+    resource: Athena\AjaxBundle\Controller\DefaultController

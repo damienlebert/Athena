@@ -27,6 +27,30 @@ class ConversationRepository extends EntityRepository
 
     }
 
+    public function findConversationByTwoUsers($idConnectedUser, $idOtherUser)
+    {
+
+        $q = $this->createQueryBuilder('c');
+
+        $q->leftJoin('c.user_conversation', 'uc1')
+            ->leftJoin('c.user_conversation', 'uc2')
+            ->leftJoin('c.messages', 'm')
+            ->where('uc1.user = :id1')
+            ->setParameter('id1', $idConnectedUser)
+            ->andWhere('uc2.user = :id2')
+            ->setParameter('id2', $idOtherUser);
+
+        $result = $q->getQuery()->getResult();
+
+        if(count($result) > 0) {
+            return $result[0];
+        } else {
+            return null;
+        }
+
+
+    }
+
 
 
 

@@ -122,3 +122,14 @@ services:
     class: Athena\ChatBundle\Listener\ControllerListener
     tags:
       -  { name: kernel.event_listener, event: kernel.controller, method: onCoreController }
+
+jms_serializer:
+  metadata:
+    debug: true
+    file_cache:
+      dir: "%kernel.cache_dir%/serializer"
+    auto_detection: true
+    directories:
+      FOSUserBundle:
+        namespace_prefix: FOS\UserBundle
+        path: "@AthenaAjaxBundle/Resources/config/serializer"

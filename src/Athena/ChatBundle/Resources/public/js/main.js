@@ -1,73 +1,45 @@
+var templateSelfMessage;
+var templateOtherMessage;
+$.get('/bundles/athenachat/mustache/chat-self-message.hbs', function (template) {
+    templateSelfMessage = template;
+});
+$.get('/bundles/athenachat/mustache/chat-other-message.hbs', function (template) {
+    templateOtherMessage = template;
+});
+
 function ajouterConversation(login, nom)
-{ 
+{
+    url = "/conversation/get/" + login.toString();
+
         $.ajax({
             type: "GET",
-            url: "managers/initMessages.php",
+            url: url,
             dataType:'json',
-            data: {userOther: login},       
-            success:function(retour){
+            success:function(retour) {
+
                 var id_conversation = retour['id_conversation'];
-                if($("#conversation-"+id_conversation).size() === 0){               
-                    var messages = retour['messages'];
-                    
-                    $.ajax({
-                        type: "GET",
-                        url: "managers/enableConversation.php",
-                        dataType:'json',
-                        data: {id_conversation: id_conversation}
+
+                if($("#conversation-"+id_conversation).size() === 0){
+
+                    var viewData = {id_conversation: id_conversation, name: nom, loginOther: login};
+
+                    $.get('/bundles/athenachat/mustache/chat-box.hbs', function (template) {
+                        var rendered = Mustache.render(template, viewData);
+                        $('#conversation-container').append(rendered);
+                        $.each(retour.messages, function(index, message) {
+                            mine = true;
+                            if(message.id_user.id == login) {
+                                mine = false;
+                            }
+                            addMessage(id_conversation, message.contenu, message.date, mine, null);
+                        });
                     });
-                    
-                    var conversation = '<div id="bloc-conversation-'+id_conversation+'" class="bloc-conversation visible"><div id="bouton-conversation-'+id_conversation+'" onClick="hide(\''+id_conversation+'\');return false;" class="fixe-bas hidden">\n\
-                                            <div class="top-bar" style="bottom:15px;position:relative" >\n\
-                                                <div class="left" >';
-                    conversation += '               <span class="typcn typcn-message" id="logoBar-'+login+'"></span>';
-                    conversation += '                   <h1>'+nom+'</h1>';
-                    conversation += '           </div>';
-                    conversation += '           <div class="right">'
-                    conversation += '               <span class="glyphicon glyphicon-remove" onClick="removeConversation(\''+id_conversation+'\')"></span>';
-                    conversation += '           </div>';
-                    conversation += '       </div></div>';
-                    conversation += '<div class="module visible" name="modal-conversation" id="conversation-'+id_conversation+'">\n\
-                                            <div class="top-bar" onClick="hide(\''+id_conversation+'\');">\n\
-                                                <div class="left" >';
-                    conversation += '               <span class="typcn typcn-message" id="logoConv-'+login+'"></span>';
-                    conversation += '                   <h1>'+nom+'</h1>';
-                    conversation += '           </div>';
-                    conversation += '           <div class="right">'
-                    conversation += '               <span class="glyphicon glyphicon-remove" onClick="removeConversation(\''+id_conversation+'\')"></span>';
-                    conversation += '           </div>';
-                    conversation += '       </div>';
-                    conversation += '       <div id="panel-message-'+login+'" class="visible">\n\
-                                                <div class="discussionContainer" id="messagesPanel-'+login+'">';
-                    conversation += '               <ol id="discussion-'+login+'" class="discussion">';
 
-                    conversation += '               </ol>';
-                    conversation += '           </div>';
-                    conversation += '           <div class="form-group form-group-colle">';
-                    conversation += '               <input type="text" class="form-control input-sm" style="border-radius:0;" id="message-'+login+'" placeholder="Votre message">';
-                    conversation += '           </div>\n\
-                                            </div>';
-                    conversation += '   </div></div>';
-                    $("#conversation-container").append(conversation);   
-                    
-                    //console.log(messages);
-                    
-                    for(index = 0; index < messages.length; index++){
-                        var mess = messages[index];          
 
-                        var bool = true;
-                        if(mess['usr_msg'] == login){bool = false;}
-                        //console.log(login + '' + mess['contenu_msg'] + '' + mess['date_msg'] + '' + bool);
-                        var avatar = bool ? arrayAvatars['userConnecte'] : arrayAvatars[login];
-                        addMessage(login, mess['contenu_msg'], mess['date_msg'], bool, avatar);
-                        $('#messagesPanel-'+login+'').animate({scrollTop:60000}, 'fast');
-                    }
-                }else{
-                    if($('#conversation-'+id_conversation).attr("class")==="module hidden"){
-                        $('#conversation-'+id_conversation).attr("class","module visible");
-                        $('#bouton-conversation-'+id_conversation).attr("class","fixe-bas hidden");
-                    }
+
+
                 }
+
             }
          });
 }
@@ -86,34 +58,32 @@ function hide(id_conversation)
 
 function removeConversation(id_conversation)
 {
+    url = "/conversation/remove/" + id_conversation.toString();
+
     $.ajax({
             type: "GET",
-            url: "managers/disableConversation.php",
-            data: {id_conversation: id_conversation}
+            url: url,
+            success:function(retour){
+                if (retour == true) {
+                    $('#bloc-conversation-'+id_conversation).remove();
+                }
+            }
         });
-    $('#bloc-conversation-'+id_conversation).remove();
 }
 
-function addMessage(loginOther, content, date, bool, avatar)
-{
-  var message = "";
-  message+=' <li class="';
-  if(bool == '1'){
-    message+='self';      
-  }else{
-    message+='other';      
-  }
-  message+='">';
-  message+='       <div class="avatar">';
-  message+='           <img src="/img/avatars/'+avatar+'" class="img-responsive"/>';
-  message+='       </div>';
-  message+='       <div class="messages">';
-  message+='           <p>'+content+'</p>';
-  message+='           <time>'+date+'</time>';
-  message+='       </div>';
-  message+='   </li>';
-  
-  $('#discussion-'+loginOther).append(message);
+function addMessage(idConversation, content, date, bool, avatar) {
+    var template = "";
+
+    if (bool == '1') {
+        template = templateSelfMessage;
+    } else {
+        template = templateOtherMessage;
+    }
+
+    viewData = { message: content, date: date, avatar:avatar };
+    rendered = Mustache.render(template, viewData);
+
+    $('ol#discussion-' + idConversation).append(rendered);
 }
 
 function setConnecte(login){
