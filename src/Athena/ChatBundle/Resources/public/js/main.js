@@ -11,12 +11,17 @@ function ajouterConversation(login, nom)
 {
     url = "/conversation/get/" + login.toString();
 
+        $.ajaxSetup({
+            // Disable caching of AJAX responses
+            cache: false
+        });
+
         $.ajax({
             type: "GET",
             url: url,
             dataType:'json',
             success:function(retour) {
-
+                //console.log(login);
                 var id_conversation = retour['id_conversation'];
 
                 if($("#conversation-"+id_conversation).size() === 0){
@@ -24,6 +29,7 @@ function ajouterConversation(login, nom)
                     var viewData = {id_conversation: id_conversation, name: nom, loginOther: login};
 
                     $.get('/bundles/athenachat/mustache/chat-box.hbs', function (template) {
+                        //console.log(template);
                         var rendered = Mustache.render(template, viewData);
                         $('#conversation-container').append(rendered);
                         $.each(retour.messages, function(index, message) {
@@ -34,9 +40,6 @@ function ajouterConversation(login, nom)
                             addMessage(id_conversation, message.contenu, message.date, mine, null);
                         });
                     });
-
-
-
 
                 }
 
@@ -60,13 +63,12 @@ function removeConversation(id_conversation)
 {
     url = "/conversation/remove/" + id_conversation.toString();
 
+    $('#bloc-conversation-'+id_conversation).remove();
+
     $.ajax({
             type: "GET",
             url: url,
             success:function(retour){
-                if (retour == true) {
-                    $('#bloc-conversation-'+id_conversation).remove();
-                }
             }
         });
 }

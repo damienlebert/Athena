@@ -115,8 +115,14 @@ class Chat
 
         $linkConversationUserOther = new LinkUsrConversation();
         $linkConversationUserOther->setStatut(1)
-            ->setConversation($conversation)
-            ->setUser($this->em->getRepository('AthenaUserBundle:User')->find($userOther));
+            ->setConversation($conversation);
+
+		$userOtherObj = $this->em->getRepository('AthenaUserBundle:User')->find($userOther);
+		if ($userOtherObj instanceof User) {
+			$linkConversationUserOther->setUser($userOtherObj);
+		} else {
+			throw new \Exception("User " . $userOther . " not found");
+		}
         //Debug
         //\Doctrine\Common\Util\Debug::dump($linkConversationUserOther);
 

@@ -27,24 +27,48 @@ app.use(logger('dev'));
     next();
 });*/
 
+var users = [];
+
 io.on('connection', function(socket){
+
+    console.log('Socket connected !');
+
     //Liste des sokets utilisateurs
-    var users = [];
+
     function updateNicknames(){
-        io.sockets.emit('usernames', Object.keys(users));
+        io.sockets.emit('usernames', getUserIds());
+    }
+
+    function getUsername(id) {
+        return "User" + id;
+    }
+
+    function getUserIds() {
+        keys = Object.keys(users);
+        ids = [];
+        for(i=0; i<keys.length; i++) {
+            ids[i] = keys[i].substr(4);
+        }
+        console.log("Ids:", ids);
+        return ids;
     }
 
     socket.on('new user', function(data){
-        debug('New user connected : ID : ' + data);
+        console.log('New user connected : ID : ' + data);
+
         // if user already connected
-        socket.nickname = data;
+        socket.nickname = getUsername(data);
         // Add socket to user array
         users[socket.nickname] = socket;
+
+        console.log('Liste des utilisateurs connectés : ');
+        console.log(Object.keys(users));
+
         updateNicknames();
     });
 
     socket.on('getUsernames', function(data){
-        users[data].emit('usernames', Object.keys(users));
+        users[getUsername(data)].emit('usernames', getUserIds());
     });
 
     socket.on('send message', function(data, callback){
@@ -52,10 +76,11 @@ io.on('connection', function(socket){
         console.log('after trimming message is: ' + msg);
         var to = data['to'];
         var fromUser = data['from'];
-        if(to in users && fromUser in users){
-            users[to].emit('new message', {msg: msg, from: fromUser, to:to});
-            users[fromUser].emit('new message', {msg: msg, from: fromUser, to:to});
-            console.log('message sent is: ' + msg);
+        var conversation = data['conversation'];
+        if(getUsername(to) in users && getUsername(fromUser) in users){
+            users[getUsername(to)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
+            users[getUsername(fromUser)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
+            console.log('message sent to ' + to + ', from ' + fromUser + ' is: ' + msg);
             console.log('Whisper!');
         }
     });
@@ -70,7 +95,7 @@ io.on('connection', function(socket){
         var to = data['to'];
         var fromUser = data['from'];
         if(to in users && fromUser in users){
-            users[to].emit('otherTyping', {isTyping: true, from: fromUser});
+            users[getUsername(to)].emit('otherTyping', {isTyping: true, from: fromUser});
         }
     });
 

@@ -89,13 +89,19 @@
             });
 
             socket.on('new message', function(data){
+                console.log("Nouveau message reçu:");
+                console.log(data);
                 if(data['from'] == '{{ app.user.id }}'){
-                    addMessage(data['to'], data['msg'], "", true, arrayAvatars['userConnecte']);
+                    addMessage(data['conversation'], data['msg'], "", true);
                 }else{
                     var nomFrom = $("#contact-"+data['from']).html().split('<')[0];
+                    console.log("Message from: " + nomFrom);
+
                     ajouterConversation(data['from'], nomFrom);
-                    addMessage(data['from'], data['msg'], "", false, arrayAvatars[data['from']]);
-                    $('#messagesPanel-'+data['from']).animate({scrollTop:60000}, 'fast');
+
+                    addMessage(data['conversation'], data['msg'], "", false);
+
+                    $('#messagesPanel-'+data['conversation']).animate({scrollTop:60000}, 'fast');
                 }
             });
 
@@ -104,25 +110,26 @@
                 if(code == 13){
                     //Récupération des données
                     var message = $(":focus").val();
-                    var contact = $(":focus").attr("id").substr(8);
+                    var contact = $(":focus").attr("data-reciever-id");
+                    var conversation = $(":focus").attr("id").substr(8);
 
                     //Faire envoi message
-                    var SendData = {from:'{{ app.user.id }}',to:contact,msg:message};
+                    var SendData = {from:'{{ app.user.id }}',to:contact,msg:message,conversation:conversation};
 
 
                     $('#messagesPanel-'+contact).animate({scrollTop:60000}, 'fast');
                     //Ajouter le message dans la base
-                    /*$.ajax({
-                        type: "GET",
-                        url: "managers/addMessage.php",
-                        data: {userConnecte: '{{ app.user.id }}', userOther: contact, message: message},
+                    $.ajax({
+                        type: "POST",
+                        url: "/messages/add/" + conversation,
+                        data: {userConnecte: '{{ app.user.id }}', message: message},
                         success:function(){
                             socket.emit('send message', SendData);
                         },
                         error:function(xhr, texte, error){
                             alert("Vous devez vous connecter pour envoyer un message !");
                         }
-                    });*/
+                    });
                     //Effacer le champ massage
                     $(":focus").val("");
                 }else{

@@ -2,6 +2,8 @@
 
 namespace Athena\AjaxBundle\Controller;
 
+use Athena\ChatBundle\Entity\Conversation;
+use Athena\ChatBundle\Entity\Message;
 use Athena\UserBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -9,6 +11,8 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class DefaultController extends FOSRestController
 {
@@ -108,16 +112,35 @@ class DefaultController extends FOSRestController
     /**
      * @View()
      *
+     * @POST("/messages/add/{idConversation}", name="athena_ajax_new_message")
      */
-    public function addMessageAction()
+    public function addMessageAction(Request $request, $idConversation)
     {
         $service = $this->get('athena_chat.chat');
 
         if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $connectedUser = $this->get('security.context')->getToken()->getUser();
-            return $service->fetchAllConversations($connectedUser->getId());
+            $conversation = $service->findConversation($idConversation);
+
+            $message = $request->request->get('message');
+
+            if ($conversation instanceof Conversation && !empty($message)) {
+                $messageObj = new Message();
+                $messageObj->setContenu($message)
+                    ->setConversation($conversation)
+                    ->setDate(new \DateTime('now'))
+                    ->setId_user($connectedUser);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($messageObj);
+                $em->flush();
+
+            } else {
+                throw new \Exception("La conversion n'a pas été trouvée");
+            }
+
         } else {
-            return null;
+            throw new \Exception("Vous devez vous connecter!");
         }
     }
 
