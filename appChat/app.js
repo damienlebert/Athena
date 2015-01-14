@@ -81,7 +81,9 @@ io.on('connection', function(socket){
             users[getUsername(to)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
             users[getUsername(fromUser)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
             console.log('message sent to ' + to + ', from ' + fromUser + ' is: ' + msg);
-            console.log('Whisper!');
+        } else if (getUsername(fromUser) in users) {
+            users[getUsername(fromUser)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
+            console.log('message sent to ' + to + ' (user absent), from ' + fromUser + ' is: ' + msg);
         }
     });
 

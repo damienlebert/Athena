@@ -1,5 +1,13 @@
 var templateSelfMessage;
 var templateOtherMessage;
+
+if (window.location.href.match(/app_dev\.php/)) {
+    console.log('dev: no-ajax-cache');
+    $.ajaxSetup({
+        // Disable caching of AJAX responses
+        cache: false
+    });
+}
 $.get('/bundles/athenachat/mustache/chat-self-message.hbs', function (template) {
     templateSelfMessage = template;
 });
@@ -10,11 +18,13 @@ $.get('/bundles/athenachat/mustache/chat-other-message.hbs', function (template)
 function ajouterConversation(login, nom)
 {
     url = "/conversation/get/" + login.toString();
-
+    if (window.location.href.match(/app_dev\.php/)) {
+        console.log('dev: no-ajax-cache');
         $.ajaxSetup({
             // Disable caching of AJAX responses
             cache: false
         });
+    }
 
         $.ajax({
             type: "GET",
@@ -76,11 +86,19 @@ function removeConversation(id_conversation)
 function addMessage(idConversation, content, date, bool, avatar) {
     var template = "";
 
+    if (avatar == '' || avatar == 'undefined' || avatar == null) {
+        avatar = 'avatar.png';
+    }
+
+    //console.log('avatar: ' + avatar);
+
     if (bool == '1') {
         template = templateSelfMessage;
     } else {
         template = templateOtherMessage;
     }
+
+    //console.log('template: ' + template);
 
     viewData = { message: content, date: date, avatar:avatar };
     rendered = Mustache.render(template, viewData);

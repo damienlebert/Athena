@@ -1,5 +1,90 @@
 {% extends "::layout.html.twig" %}
 
 {% block content %}
-Hello world !
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <!-- Header -->
+        <div id="header" class="skel-layers-fixed">
+
+            <div class="top">
+
+                <!-- Logo -->
+                <div id="logo">
+                    <span class="image avatar48"><img src="/bundles/athenachat/images/avatars/avatar.png" alt="" /></span>
+                    <h1 id="title">{{ app.user.lastname }}&nbsp;{{ app.user.firstname }}</h1>
+                </div>
+
+                <section class="form_user">
+                    {{ form_start(form) }}
+
+                        <h4>
+                            Modifier mes informations
+                        </h4>
+                        <div>
+                            {{ form_widget(form.firstName) }}
+                        </div>
+                        <div>
+                            {{ form_widget(form.lastName) }}
+                        </div>
+                        <div>
+                            {{ form_widget(form.email) }}
+                        </div>
+                        <div>
+                            <button class="btn btn-default" name="Valider">Enregistrer</button>
+                        </div>
+                    {{ form_end(form) }}
+
+                        <h4>
+                            Mot de passe
+                        </h4>
+
+                        <div>
+                            {#{{ form_widget(form.plainPassword.first) }}#}
+                        </div>
+                        <div>
+                            {#{{ form_widget(form.plainPassword.second) }}#}
+                        </div>
+                        <div>
+                            <button class="btn btn-default" name="Valider">Enregistrer</button>
+                        </div>
+
+
+                </section>
+
+
+            </div>
+
+            <div class="bottom">
+
+                <!-- Social Icons -->
+                <ul class="icons">
+                    <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+                    <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div id="main">
+
+            <!-- Intro -->
+            <section id="top" class="one dark cover">
+                <div class="container">
+
+                    <header>
+                        <h2 class="alt">Hi! I'm <strong>Prologue</strong>, a <a href="http://html5up.net/license">free</a> responsive<br />
+                            site template designed by <a href="http://html5up.net">HTML5 UP</a>.</h2>
+                        <p>Ligula scelerisque justo sem accumsan diam quis<br />
+                            vitae natoque dictum sollicitudin elementum.</p>
+                    </header>
+
+                </div>
+            </section>
+        </div>
+
+    {% endif %}
 {% endblock content %}
