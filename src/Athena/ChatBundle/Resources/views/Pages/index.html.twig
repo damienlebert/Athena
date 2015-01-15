@@ -11,6 +11,9 @@
                 <div id="logo">
                     <span class="image avatar48"><img src="/bundles/athenachat/images/avatars/avatar.png" alt="" /></span>
                     <h1 id="title">{{ app.user.lastname }}&nbsp;{{ app.user.firstname }}</h1>
+                    <p>
+                        <a href="{{ path('fos_user_security_logout') }}" title="déconnexion">Se déconnecter</a>
+                    </p>
                 </div>
 
                 <section class="form_user">
@@ -89,6 +92,35 @@
                     </header>
 
                 </div>
+            </section>
+            <section id="section-chat-room">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                            <h4 style="text-align:left;">
+                                Discutez avec tout le monde...
+                            </h4>
+                            <section id="chat-room-messages" name="chat-room-message">
+
+                            </section>
+
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+
+                            <textarea name="chat-room-area" id="chat-room-area" class="form-control" rows="2" maxlength="300" placeholder="Tapez votre message ici..."></textarea>
+                            <button name="chat-room-submit" id="chat-room-submit" class="btn btn-default">Envoyer</button>
+
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                    </div>
+                </div>
+
             </section>
         </div>
 

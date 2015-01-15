@@ -225,7 +225,6 @@ class Chat
 	                ->getRepository('AthenaChatBundle:Message')
 	                ->fetchAllMessages($idConversation);
 	}
-	
-	
+
 	
 }

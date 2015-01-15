@@ -33,22 +33,22 @@ class DefaultController extends FOSRestController
 
     }
 
-    /**
-     * @View()
-     *
-     */
-    public function conversationsAction()
-    {
-        $service = $this->get('athena_chat.chat');
-
-        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $connectedUser = $this->get('security.context')->getToken()->getUser();
-            return $service->fetchAllConversations($connectedUser->getId());
-
-        } else {
-            return null;
-        }
-    }
+//    /**
+//     * @View()
+//     *
+//     */
+//    public function conversationsAction()
+//    {
+//        $service = $this->get('athena_chat.chat');
+//
+//        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+//            $connectedUser = $this->get('security.context')->getToken()->getUser();
+//            return $service->fetchAllConversations($connectedUser->getId());
+//
+//        } else {
+//            return null;
+//        }
+//    }
 
     /**
      * @View()
@@ -57,19 +57,22 @@ class DefaultController extends FOSRestController
      */
     public function getConversationAction($idOther)
     {
+
+
         $service = $this->get('athena_chat.chat');
 
-        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $connectedUser = $this->get('security.context')->getToken()->getUser();
-            $conversation = $service->findConversationByTwoUsers($connectedUser, $idOther);
+        if($this->getRequest()->isXmlHttpRequest()) {
+            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $connectedUser = $this->get('security.context')->getToken()->getUser();
+                $conversation = $service->findConversationByTwoUsers($connectedUser, $idOther);
 
-            $service->enableConversation($conversation->getId_conversation(), $connectedUser->getId());
-            $service->enableConversation($conversation->getId_conversation(), $idOther);
+                $service->enableConversation($conversation->getId_conversation(), $connectedUser->getId());
+                $service->enableConversation($conversation->getId_conversation(), $idOther);
+                return $conversation;
 
-            return $conversation;
-
-        } else {
-            return null;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -83,31 +86,33 @@ class DefaultController extends FOSRestController
 
         $service = $this->get('athena_chat.chat');
 
-        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $connectedUser = $this->get('security.context')->getToken()->getUser();
-            $service->disableConversation($idConversation, $connectedUser->getId());
-            return true;
-        } else {
-            return false;
+        if($this->getRequest()->isXmlHttpRequest()) {
+            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $connectedUser = $this->get('security.context')->getToken()->getUser();
+                $service->disableConversation($idConversation, $connectedUser->getId());
+                return true;
+            } else {
+                return false;
+            }
         }
 
     }
 
-    /**
-     * @View()
-     *
-     */
-    public function addConversationAction()
-    {
-        $service = $this->get('athena_chat.chat');
-
-        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $connectedUser = $this->get('security.context')->getToken()->getUser();
-            return $service->fetchAllConversations($connectedUser->getId());
-        } else {
-            return null;
-        }
-    }
+//    /**
+//     * @View()
+//     *
+//     */
+//    public function addConversationAction()
+//    {
+//        $service = $this->get('athena_chat.chat');
+//
+//        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+//            $connectedUser = $this->get('security.context')->getToken()->getUser();
+//            return $service->fetchAllConversations($connectedUser->getId());
+//        } else {
+//            return null;
+//        }
+//    }
 
     /**
      * @View()
@@ -118,29 +123,48 @@ class DefaultController extends FOSRestController
     {
         $service = $this->get('athena_chat.chat');
 
-        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $connectedUser = $this->get('security.context')->getToken()->getUser();
-            $conversation = $service->findConversation($idConversation);
+        if($this->getRequest()->isXmlHttpRequest()) {
+            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $connectedUser = $this->get('security.context')->getToken()->getUser();
+                $conversation = $service->findConversation($idConversation);
 
-            $message = $request->request->get('message');
+                $message = $request->request->get('message');
 
-            if ($conversation instanceof Conversation && !empty($message)) {
-                $messageObj = new Message();
-                $messageObj->setContenu($message)
-                    ->setConversation($conversation)
-                    ->setDate(new \DateTime('now'))
-                    ->setId_user($connectedUser);
+                if ($conversation instanceof Conversation && !empty($message)) {
+                    $messageObj = new Message();
+                    $messageObj->setContenu($message)
+                        ->setConversation($conversation)
+                        ->setDate(new \DateTime('now'))
+                        ->setId_user($connectedUser);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($messageObj);
-                $em->flush();
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($messageObj);
+                    $em->flush();
+
+                } else {
+                    throw new \Exception("La conversion n'a pas été trouvée");
+                }
 
             } else {
-                throw new \Exception("La conversion n'a pas été trouvée");
+                throw new \Exception("Vous devez vous connecter!");
             }
+        }
+    }
 
-        } else {
-            throw new \Exception("Vous devez vous connecter!");
+    /**
+     * @View()
+     *
+     * @GET("/user/search/{search}")
+     */
+    public function searchUserAction(Request $request, $search)
+    {
+        $service = $this->get('athena_chat.chat');
+        if($this->getRequest()->isXmlHttpRequest()) {
+            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+
+                return $service-findUsers($search);
+
+            }
         }
     }
 

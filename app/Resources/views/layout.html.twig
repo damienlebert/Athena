@@ -32,43 +32,6 @@
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
-           {#<div class="navbar navbar-fixed-top">#}
-                {#<div class="container">#}
-                    {#<div class="navbar-header">#}
-                         {#<a class="navbar-brand" href="/">ATHENA Messenger</a>#}
-                    {#</div>#}
-                    {#<div class="navbar-collapse collapse">#}
-                        {#<ul class="nav navbar-nav">#}
-                                {#<li id='welcome' class="active">#}
-                                    {#<a href="/">Accueil</a>#}
-                                {#</li>#}
-                                {#<li id='chat' class="inactive">#}
-                                    {#<a href="/chat">Chat</a>#}
-                                {#</li>#}
-
-                        {#</ul>#}
-                        {#<ul class="nav navbar-nav navbar-right">#}
-{#{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}#}
-		                    {#<li class="active">#}
-		                        {#<p class="navbar-text blue-text">#}
-		                            {#Bonjour {{ app.user.lastname }}&nbsp;{{ app.user.firstname }}#}
-		                        {#</p>#}
-		                    {#</li>#}
-		                    {#<li class="inactive">#}
-		                        {#<a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>#}
-		                    {#</li>#}
-{#{% else %}#}
-                    		{#<li class="inactive">#}
-                        		{#<a href="{{ path('fos_user_security_login') }}">Connexion</a>#}
-                    		{#</li>#}
-{#{% endif %}#}
-                        {#</ul>#}
-                    {#</div>#}
-                    {#<!--/.navbar-collapse -->#}
-                {#</div>#}
-            {#</div>#}
-
-
 
     <div id="contenu-page">
         <div id="error"></div>
@@ -93,7 +56,7 @@
 	                </div>
 	                <div class="row">
 	                    <div class='user-td tableau-users'>
-	                    	<input class="form-control input-sm search-field" style="border:0;" type="text" name="recherche" id="recherche" placeholder="Rechercher" width="100%" style="width:60%" onkeyup="rechercheUser($(this).val())" />
+	                    	<input class="form-control input-sm search-field" style="border:0;" type="text" name="recherche" id="recherche" placeholder="Rechercher" width="100%" style="width:60%" onkeyup="findUsers($(this).val())" />
 	                    </div>
 	                </div>
 	            </div>
@@ -161,14 +124,29 @@
 
                 //$nickForm.submit(function(e){
                 //e.preventDefault();
-                socket.emit('new user', '{{ app.user.id }}');
+                socket.emit('new user', { id:'{{ app.user.id }}', fullname:'{{ app.user.fullname }}'});
                 //});
-
-
 
                 socket.on('usernames', function(data){
                     //console.log('im here');
                     updateConnected(data);
+                });
+
+                socket.on('new user connected', function(data){
+
+                    txt = '';
+                    if (data['id'] == '{{ app.user.id }}') {
+                        txt = '<div class="chat-room-message">--- Vous êtes maintenant connecté.</div>';
+                    } else {
+                        txt = '<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant connecté.</div>';
+                    }
+                    $('#chat-room-messages').append(txt);
+                    $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
+                });
+
+                socket.on('user disconnected', function(data) {
+                    $('#chat-room-messages').append('<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant déconnecté.</div>');
+                    $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
                 });
 
                 $messageForm.submit(function(e){
@@ -179,6 +157,31 @@
                     });
                     $messageBox.val('');
                 });
+
+
+                function sendChatRoomMessage()
+                {
+                    var messageToAll = $('#chat-room-area').val().trim();
+                    if (messageToAll != null && messageToAll != '') {
+                        socket.emit('chatroom message', {msg: messageToAll, from: '{{ app.user.id }}', fullname: '{{ app.user.fullname }}'});
+                    }
+                    $('#chat-room-area').val('');
+                }
+
+                $('#chat-room-submit').on('click', function(e){
+                    e.preventDefault();
+                    sendChatRoomMessage();
+                    return false;
+                });
+
+                $('#chat-room-area').on('keypress', function(e){
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    if(code == 13){
+                        sendChatRoomMessage();
+                        return false;
+                    }
+                });
+
 
                 socket.on('new message', function(data){
                     console.log("Nouveau message reçu:");
@@ -195,6 +198,22 @@
 
                         $('#messagesPanel-'+data['conversation']).animate({scrollTop:60000}, 'fast');
                     }
+                });
+
+                socket.on('new chatroom message', function(data) {
+                    console.log('Nouveau message à tous : ' + data['msg']);
+
+                    from = data['from'];
+
+                    txt = '';
+
+                    if (from == '{{ app.user.id }}') {
+                        txt = '<div class="chat-room-message">&gt; <strong class="chat-room-name">Moi: </strong>' + data['msg'] + '</div>';
+                    } else {
+                        txt = '<div class="chat-room-message">&gt; <strong class="chat-room-name">' + data['fullname'] + ': </strong>' + data['msg'] + '</div>';
+                    }
+                    $('#chat-room-messages').append(txt);
+                    $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
                 });
 
                 $(document).on("keypress", $("input"), function(e){

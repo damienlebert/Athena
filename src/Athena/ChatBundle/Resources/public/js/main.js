@@ -1,23 +1,28 @@
 var templateSelfMessage;
 var templateOtherMessage;
+var templateChatBox;
 
-if (window.location.href.match(/app_dev\.php/)) {
+//if (window.location.href.match(/app_dev\.php/)) {
     console.log('dev: no-ajax-cache');
     $.ajaxSetup({
         // Disable caching of AJAX responses
         cache: false
     });
-}
+//}
 $.get('/bundles/athenachat/mustache/chat-self-message.hbs', function (template) {
     templateSelfMessage = template;
 });
 $.get('/bundles/athenachat/mustache/chat-other-message.hbs', function (template) {
     templateOtherMessage = template;
 });
+$.get('/bundles/athenachat/mustache/chat-box.hbs', function (template) {
+    templateChatBox = template;
+});
 
 function ajouterConversation(login, nom)
 {
     url = "/conversation/get/" + login.toString();
+    console.log(url);
     if (window.location.href.match(/app_dev\.php/)) {
         console.log('dev: no-ajax-cache');
         $.ajaxSetup({
@@ -38,9 +43,8 @@ function ajouterConversation(login, nom)
 
                     var viewData = {id_conversation: id_conversation, name: nom, loginOther: login};
 
-                    $.get('/bundles/athenachat/mustache/chat-box.hbs', function (template) {
                         //console.log(template);
-                        var rendered = Mustache.render(template, viewData);
+                        var rendered = Mustache.render(templateChatBox, viewData);
                         $('#conversation-container').append(rendered);
                         $.each(retour.messages, function(index, message) {
                             mine = true;
@@ -49,11 +53,11 @@ function ajouterConversation(login, nom)
                             }
                             addMessage(id_conversation, message.contenu, message.date, mine, null);
                         });
-                    });
 
                 }
 
-            }
+            },
+            timeout: 7000
          });
 }
 
@@ -124,4 +128,9 @@ function updateConnected(usersConnectes)
             setDeconnecte(user);
         }
     });
+}
+
+function findUsers(search)
+{
+    console.log("Recherche de:" + search);
 }

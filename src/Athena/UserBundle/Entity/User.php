@@ -242,4 +242,9 @@ class User  extends BaseUser
 
     }
 
+    public function getFullname()
+    {
+        return ucfirst($this->lastName) . ' ' . ucfirst($this->firstName);
+    }
+
 }
