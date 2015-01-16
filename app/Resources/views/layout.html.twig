@@ -184,24 +184,21 @@
 
 
                 socket.on('new message', function(data){
-                    console.log("Nouveau message reçu:");
+                    //console.log("Nouveau message reçu:");
                     console.log(data);
                     if(data['from'] == '{{ app.user.id }}'){
                         addMessage(data['conversation'], data['msg'], "", true);
                     }else{
                         var nomFrom = $("#contact-"+data['from']).html().split('<')[0];
-                        console.log("Message from: " + nomFrom);
-
-                        ajouterConversation(data['from'], nomFrom);
-
+                        //console.log("Message from: " + nomFrom);
+                        ajouterConversation(data['from'], data['fromname']);
                         addMessage(data['conversation'], data['msg'], "", false);
-
                         $('#messagesPanel-'+data['conversation']).animate({scrollTop:60000}, 'fast');
                     }
                 });
 
                 socket.on('new chatroom message', function(data) {
-                    console.log('Nouveau message à tous : ' + data['msg']);
+                    //console.log('Nouveau message à tous : ' + data['msg']);
 
                     from = data['from'];
 

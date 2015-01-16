@@ -4,13 +4,18 @@ namespace Athena\ChatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Athena\UserBundle\Entity\User;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\VirtualProperty;
+use JMS\Serializer\Annotation\SerializedName;
+
 
 /**
  * User
  *
  * @ORM\Table(name="message")
  * @ORM\Entity(repositoryClass="Athena\ChatBundle\Entity\MessageRepository")
- *
+ * @ExclusionPolicy("none")
  */
 class Message
 {
@@ -43,6 +48,8 @@ class Message
      * 
      * @ORM\ManyToOne(targetEntity="Athena\UserBundle\Entity\User")
    	 * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+	 *
+	 * @Exclude
      */
     protected $id_user; 
     
@@ -51,6 +58,7 @@ class Message
      *
      * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation")
      * @ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation", nullable=false)
+	 * @Exclude
      */
     protected $conversation;
     
@@ -130,6 +138,17 @@ class Message
 		return $this;
 	}
 
+	/**
+	 * @return mixed
+	 *
+	 *
+	 * @VirtualProperty
+	 * @SerializedName("user_message")
+	 */
+	public function getUserIdForSerialization()
+	{
+		return $this->id_user->getId();
+	}
     
 
     

@@ -2,13 +2,13 @@ var templateSelfMessage;
 var templateOtherMessage;
 var templateChatBox;
 
-//if (window.location.href.match(/app_dev\.php/)) {
+if (window.location.href.match(/app_dev\.php/)) {
     console.log('dev: no-ajax-cache');
     $.ajaxSetup({
         // Disable caching of AJAX responses
         cache: false
     });
-//}
+}
 $.get('/bundles/athenachat/mustache/chat-self-message.hbs', function (template) {
     templateSelfMessage = template;
 });
@@ -22,48 +22,38 @@ $.get('/bundles/athenachat/mustache/chat-box.hbs', function (template) {
 function ajouterConversation(login, nom)
 {
     url = "/conversation/get/" + login.toString();
-    console.log(url);
-    if (window.location.href.match(/app_dev\.php/)) {
-        console.log('dev: no-ajax-cache');
-        $.ajaxSetup({
-            // Disable caching of AJAX responses
-            cache: false
-        });
-    }
 
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType:'json',
-            success:function(retour) {
-                //console.log(login);
-                var id_conversation = retour['id_conversation'];
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType:'json',
+        success:function(retour) {
+            //console.log(login);
+            var id_conversation = retour['id_conversation'];
 
-                if($("#conversation-"+id_conversation).size() === 0){
+            if($("#conversation-"+id_conversation).size() === 0){
 
-                    var viewData = {id_conversation: id_conversation, name: nom, loginOther: login};
+                var viewData = {id_conversation: id_conversation, name: nom, loginOther: login};
 
-                        //console.log(template);
-                        var rendered = Mustache.render(templateChatBox, viewData);
-                        $('#conversation-container').append(rendered);
-                        $.each(retour.messages, function(index, message) {
-                            mine = true;
-                            if(message.id_user.id == login) {
-                                mine = false;
-                            }
-                            addMessage(id_conversation, message.contenu, message.date, mine, null);
-                        });
-
-                }
-
-            },
-            timeout: 7000
-         });
+                //console.log(template);
+                var rendered = Mustache.render(templateChatBox, viewData);
+                $('#conversation-container').append(rendered);
+                $.each(retour.messages, function(index, message) {
+                    mine = true;
+                    if(message.user_message == login) {
+                        mine = false;
+                    }
+                    addMessage(id_conversation, message.contenu, message.date, mine, null);
+                });
+                $('#messagesPanel-'+id_conversation).animate({scrollTop:60000}, 'fast');
+            }
+        },
+        timeout: 7000
+     });
 }
 
 function hide(id_conversation)
 {
-    //$('#panel-message-'+login).toggle("medium");
     if($('#conversation-'+id_conversation).attr("class")=="module hidden"){
          $('#conversation-'+id_conversation).attr("class","module visible");
          $('#bouton-conversation-'+id_conversation).attr("class","fixe-bas hidden");
@@ -76,15 +66,13 @@ function hide(id_conversation)
 function removeConversation(id_conversation)
 {
     url = "/conversation/remove/" + id_conversation.toString();
-
     $('#bloc-conversation-'+id_conversation).remove();
-
     $.ajax({
-            type: "GET",
-            url: url,
-            success:function(retour){
-            }
-        });
+        type: "GET",
+        url: url,
+        success:function(retour){
+        }
+    });
 }
 
 function addMessage(idConversation, content, date, bool, avatar) {

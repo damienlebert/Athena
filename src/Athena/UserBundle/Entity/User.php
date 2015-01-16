@@ -12,6 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Athena\ChatBundle\Entity\Conversation;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
+
 /**
  * User
  *
@@ -22,6 +25,7 @@ use Athena\ChatBundle\Entity\Conversation;
  *     message="This email is already in use.",
  *     groups={"AthenaRegistration"} 
  * )
+ * @ExclusionPolicy("none")
  */
 class User  extends BaseUser
 {
@@ -96,6 +100,7 @@ class User  extends BaseUser
     
     /**
      * @ORM\OneToMany(targetEntity="Athena\ChatBundle\Entity\LinkUsrConversation", mappedBy="user", cascade={"persist", "remove"})
+     * @Exclude
      */
     protected $user_conversation;
 

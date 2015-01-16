@@ -59,21 +59,23 @@ class DefaultController extends FOSRestController
     {
 
 
+
         $service = $this->get('athena_chat.chat');
 
-        if($this->getRequest()->isXmlHttpRequest()) {
+//        if($this->getRequest()->isXmlHttpRequest()) {
             if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
                 $connectedUser = $this->get('security.context')->getToken()->getUser();
                 $conversation = $service->findConversationByTwoUsers($connectedUser, $idOther);
 
                 $service->enableConversation($conversation->getId_conversation(), $connectedUser->getId());
                 $service->enableConversation($conversation->getId_conversation(), $idOther);
-                return $conversation;
 
+//                var_dump($conversation);exit;
+                return $conversation;
             } else {
                 return null;
             }
-        }
+//        }
     }
 
     /**

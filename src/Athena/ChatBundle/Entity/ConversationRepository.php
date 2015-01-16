@@ -38,7 +38,8 @@ class ConversationRepository extends EntityRepository
             ->where('uc1.user = :id1')
             ->setParameter('id1', $idConnectedUser)
             ->andWhere('uc2.user = :id2')
-            ->setParameter('id2', $idOtherUser);
+            ->setParameter('id2', $idOtherUser)
+            ;
 
         $result = $q->getQuery()->getResult();
 

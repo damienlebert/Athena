@@ -3,12 +3,15 @@
 namespace Athena\ChatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
- * User
+ * Conversation
  *
  * @ORM\Table(name="conversation")
  * @ORM\Entity(repositoryClass="Athena\ChatBundle\Entity\ConversationRepository")
+ * @ExclusionPolicy("none")
  * 
  */
 class Conversation
@@ -31,6 +34,7 @@ class Conversation
     
     /**
      * @ORM\OneToMany(targetEntity="LinkUsrConversation", mappedBy="conversation", cascade={"persist", "remove"})
+	 *
      */
     protected $user_conversation;
     

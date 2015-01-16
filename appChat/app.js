@@ -13,7 +13,7 @@ var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
 });
 
-console.log("Server: " + server.address().port);
+//console.log("Server: " + server.address().port);
 
 var io = require('socket.io').listen(server);
 
@@ -100,6 +100,12 @@ io.on('connection', function(socket){
         return text;
     }
 
+    function stripTags(text)
+    {
+        text = text.trim().replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        return text;
+    }
+
     socket.on('new user', function(data){
         console.log('New user connected : ID : ' + data['id']);
 
@@ -122,32 +128,33 @@ io.on('connection', function(socket){
     });
 
     socket.on('send message', function(data, callback){
-        var msg = data['msg'].trim().replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+        var msg = stripTags(data['msg']);
         msg = emoticonize(msg);
         console.log('Before send / After trimming message is: ' + msg);
         var to = data['to'];
         var fromUser = data['from'];
         var conversation = data['conversation'];
+
+        data = {msg: msg, from: fromUser, fromname: userfullnames[getUsername(fromUser)], to: to, conversation: conversation};
+
         if(getUsername(to) in users && getUsername(fromUser) in users){
-            users[getUsername(to)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
-            users[getUsername(fromUser)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
-            console.log('message sent to ' + to + ', from ' + fromUser + ' is: ' + msg);
+            users[getUsername(to)].emit('new message', data);
+            users[getUsername(fromUser)].emit('new message', data);
+            //console.log('message sent to ' + to + ', from ' + fromUser + ' is: ' + msg);
         } else if (getUsername(fromUser) in users) {
-            users[getUsername(fromUser)].emit('new message', {msg: msg, from: fromUser, to: to, conversation: conversation});
-            console.log('message sent to ' + to + ' (user absent), from ' + fromUser + ' is: ' + msg);
+            users[getUsername(fromUser)].emit('new message', data);
+            //console.log('message sent to ' + to + ' (user absent), from ' + fromUser + ' is: ' + msg);
         }
     });
 
     socket.on('chatroom message', function(data, callback){
 
-        var msg = data['msg'].trim().replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        var msg = stripTags(data['msg']);
         msg = emoticonize(msg);
         var fromUser = data['from'];
         if (getUsername(fromUser) in users) {
-            //userIds = Object.keys(users);
-            //for (i=0; i<userIds.length; i++) {
             io.sockets.emit('new chatroom message', {msg: msg, from: fromUser, fullname: userfullnames[getUsername(fromUser)]});
-            //}
             console.log("message sent to ALL, from " + fromUser + " is: " + msg);
         }
 
