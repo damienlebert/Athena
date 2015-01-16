@@ -14,6 +14,7 @@ class UserType extends AbstractType
             ->add('firstName', null, array('label' => 'Nom :', 'attr' => array('class' => 'form-control', 'placeholder' => 'Nom')))
             ->add('lastName', null, array('label' => 'Prénom :', 'attr' => array('class' => 'form-control', 'placeholder' => 'Prénom')))
             ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'attr' => array('class' => 'form-control', 'placeholder' => 'E-Mail')))
+            ->add('avatar', 'hidden', array('required' => false))
         ;
     }
 

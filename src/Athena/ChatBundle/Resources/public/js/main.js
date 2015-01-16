@@ -1,14 +1,15 @@
 var templateSelfMessage;
 var templateOtherMessage;
 var templateChatBox;
+var avatars = new Array();
 
-if (window.location.href.match(/app_dev\.php/)) {
+//if (window.location.href.match(/app_dev\.php/)) {
     console.log('dev: no-ajax-cache');
     $.ajaxSetup({
         // Disable caching of AJAX responses
         cache: false
     });
-}
+//}
 $.get('/bundles/athenachat/mustache/chat-self-message.hbs', function (template) {
     templateSelfMessage = template;
 });
@@ -30,12 +31,13 @@ function ajouterConversation(login, nom)
         success:function(retour) {
             //console.log(login);
             var id_conversation = retour['id_conversation'];
+            avatars[retour.user_conversation[0].user.id] = retour.user_conversation[0].user.avatar;
+            avatars[retour.user_conversation[1].user.id] = retour.user_conversation[1].user.avatar;
 
             if($("#conversation-"+id_conversation).size() === 0){
 
                 var viewData = {id_conversation: id_conversation, name: nom, loginOther: login};
 
-                //console.log(template);
                 var rendered = Mustache.render(templateChatBox, viewData);
                 $('#conversation-container').append(rendered);
                 $.each(retour.messages, function(index, message) {
@@ -43,7 +45,8 @@ function ajouterConversation(login, nom)
                     if(message.user_message == login) {
                         mine = false;
                     }
-                    addMessage(id_conversation, message.contenu, message.date, mine, null);
+
+                    addMessage(id_conversation, message.contenu, message.date, mine, avatars[message.user_message]);
                 });
                 $('#messagesPanel-'+id_conversation).animate({scrollTop:60000}, 'fast');
             }
@@ -82,17 +85,21 @@ function addMessage(idConversation, content, date, bool, avatar) {
         avatar = 'avatar.png';
     }
 
-    //console.log('avatar: ' + avatar);
-
     if (bool == '1') {
         template = templateSelfMessage;
     } else {
         template = templateOtherMessage;
     }
 
-    //console.log('template: ' + template);
+    if (date == '' || date == 'undefined' || date == null) {
+        datestring = new Date();
+        date = moment(new Date(), moment.ISO_8601, 'fr').fromNow();
+    } else {
+        datestring = date;
+        date = moment(date, moment.ISO_8601, 'fr').fromNow();
+    }
 
-    viewData = { message: content, date: date, avatar:avatar };
+    viewData = { message: content, date: date, datestring: datestring, avatar:avatar };
     rendered = Mustache.render(template, viewData);
 
     $('ol#discussion-' + idConversation).append(rendered);

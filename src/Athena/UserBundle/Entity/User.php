@@ -57,7 +57,7 @@ class User  extends BaseUser
     /** @ORM\Column(name="googleAccessToken", type="string", length=255, nullable=true) */
     protected $googleAccessToken;
 
-    /** @ORM\Column(name="avatar", type="string", length=255, nullable=true) */
+    /** @ORM\Column(name="avatar", type="string", length=255, nullable=true, options={"default":"avatar.png"}) */
     protected $avatar;
 
     /** @ORM\Column(name="firstName", type="string", length=255, nullable=true) 

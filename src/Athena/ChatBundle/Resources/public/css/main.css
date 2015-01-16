@@ -563,3 +563,17 @@ strong.chat-room-name {
     color: #f4d05e;
     content: "\e011";
 }
+
+
+/*-----SELECT AVATAR*/
+.dd-selected-image {
+    width: 30px;
+}
+
+.dd-option-image {
+    width: 30px;
+}
+
+.dd-options {
+    height: 300px;
+}

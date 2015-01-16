@@ -76,6 +76,8 @@
     '@AthenaChatBundle/Resources/public/vendor/modernizr/modernizr.js'
     '@AthenaChatBundle/Resources/public/js/jquery.mCustomScrollbar.js'
     '@AthenaChatBundle/Resources/public/vendor/mustache.js/mustache.js'
+    '@AthenaChatBundle/Resources/public/vendor/moment/min/moment-with-locales.min.js'
+    '@AthenaChatBundle/Resources/public/vendor/ddslick/jquery.ddslick.min.js'
     '@AthenaChatBundle/Resources/public/js/jquery.scrolly.min.js'
     '@AthenaChatBundle/Resources/public/js/jquery.scrollzer.min.js'
     '@AthenaChatBundle/Resources/public/js/skel.min.js'
@@ -102,19 +104,17 @@
                 });
 
 
-//            $.ajax({
-//                 type: "GET",
-//                 url: "/conversations",
-//                 data: {},
-//                 success:function(data){
-//                     console.log("Success");
-//                     console.log(data);
-//                 },
-//                 error:function(xhr, texte, error){
-//                     console.log("failed");
-//                     console.log(error)
-//                 }
-//             });
+                //Mise à jour des timers
+                function updateTime() {
+                    $('time').each(function(){
+                       datetime = $(this).attr('data-time');
+                       if (datetime != '' && datetime != 'undefined' && datetime != null) {
+                           $(this).html(moment(datetime, moment.ISO_8601, 'fr').fromNow());
+                       }
+                    });
+                }
+                //Mise à jour des timers toutes les minutes
+                setInterval(updateTime, 60000);
 
                 socket = io.connect('{{ nodeUrl }}');
                 //var $users = $('#users');
@@ -185,15 +185,16 @@
 
                 socket.on('new message', function(data){
                     //console.log("Nouveau message reçu:");
-                    console.log(data);
+                    //console.log(data);
+
                     if(data['from'] == '{{ app.user.id }}'){
-                        addMessage(data['conversation'], data['msg'], "", true);
+                        addMessage(data['conversation'], data['msg'], null, true, avatars[data['from']]);
                     }else{
-                        var nomFrom = $("#contact-"+data['from']).html().split('<')[0];
+                        //var nomFrom = $("#contact-"+data['from']).html().split('<')[0];
                         //console.log("Message from: " + nomFrom);
                         ajouterConversation(data['from'], data['fromname']);
-                        addMessage(data['conversation'], data['msg'], "", false);
-                        $('#messagesPanel-'+data['conversation']).animate({scrollTop:60000}, 'fast');
+                        addMessage(data['conversation'], data['msg'], null, false);
+                        $('#messagesPanel-'+data['conversation']).animate({scrollTop:60000}, 'fast', avatars[data['from']]);
                     }
                 });
 
@@ -263,6 +264,10 @@
 
         </script>
     {% endif %}
+
+    {% block javascripts %}
+    {% endblock javascripts %}
+
 
        <script type="text/javascript">
               $("#users").mCustomScrollbar({

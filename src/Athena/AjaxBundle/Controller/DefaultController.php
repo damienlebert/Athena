@@ -5,6 +5,7 @@ namespace Athena\AjaxBundle\Controller;
 use Athena\ChatBundle\Entity\Conversation;
 use Athena\ChatBundle\Entity\Message;
 use Athena\UserBundle\Entity\User;
+use Symfony\Component\Finder\Finder;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -169,5 +170,36 @@ class DefaultController extends FOSRestController
             }
         }
     }
+
+    /**
+     * @View()
+     *
+     * @GET("/avatars/list")
+     */
+    public function getAvatarsAction(Request $request)
+    {
+        if($this->getRequest()->isXmlHttpRequest()) {
+            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $user = $this->get('security.context')->getToken()->getUser();
+                $fichiers = array();
+
+                $finder = new Finder();
+                $finder->files()->in('/home/www/athena/web/bundles/athenachat/images/avatars');
+                foreach ($finder as $file) {
+                    $filename = $file->getFilename();
+                    $fichiers[] = array(
+                        'value' => $filename,
+                        'selected' => ($filename == $user->getAvatar()),
+                        'imageSrc' => "/bundles/athenachat/images/avatars/" . $filename
+                    );
+                }
+
+                return $fichiers;
+            }
+        }
+    }
+
+
+
 
 }

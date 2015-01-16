@@ -9,7 +9,7 @@
 
                 <!-- Logo -->
                 <div id="logo">
-                    <span class="image avatar48"><img src="/bundles/athenachat/images/avatars/avatar.png" alt="" /></span>
+                    <span class="image avatar48"><img src="{{ asset('bundles/athenachat/images/avatars/'~app.user.avatar) }}" alt="" /></span>
                     <h1 id="title">{{ app.user.lastname }}&nbsp;{{ app.user.firstname }}</h1>
                     <p>
                         <a href="{{ path('fos_user_security_logout') }}" title="déconnexion">Se déconnecter</a>
@@ -32,8 +32,12 @@
                             {{ form_widget(form.email) }}
                         </div>
                         <div>
+                            <div id="avatars"></div>
+                        </div>
+                        <div>
                             <button class="btn btn-default" name="Valider">Enregistrer</button>
                         </div>
+                        {{ form_widget(form.avatar) }}
                     {{ form_end(form) }}
 
                         <h4>
@@ -49,6 +53,7 @@
                         <div>
                             <button class="btn btn-default" name="Valider">Enregistrer</button>
                         </div>
+
 
 
                 </section>
@@ -126,3 +131,32 @@
 
     {% endif %}
 {% endblock content %}
+
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+
+            $.ajax({
+                type: "GET",
+                url: '/avatars/list',
+                success:function(dataAvatars){
+                    $('#avatars').ddslick({
+                        data: dataAvatars,
+                        width: 295,
+                        imagePosition: "left",
+                        onSelected: function (data) {
+                            console.log(data);
+                            $('#athena_user_avatar').val(data.selectedData.value);
+                        }
+                    });
+                }
+            });
+
+
+
+        });
+
+    </script>
+{% endblock javascripts %}

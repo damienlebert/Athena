@@ -207,7 +207,7 @@
 			{
 				width: 48px;
 				height: 48px;
-				background: #f00;
+				background: url("images/overlay.png") repeat scroll 0% 0% #222629;
 			}
 			
 				.image.avatar48 img
