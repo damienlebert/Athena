@@ -577,3 +577,113 @@ strong.chat-room-name {
 .dd-options {
     height: 300px;
 }
+
+/*********************************************************************************/
+/* Header                                                                        */
+/*********************************************************************************/
+
+#header-login
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background: #222629 url('images/overlay.png');
+    box-shadow: inset -0.25em 0 0.25em 0 rgba(0,0,0,0.1);
+    text-align: right;
+
+    overflow: auto;
+}
+
+#header-login .top
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+#header-login .bottom
+{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#header-login .icons
+{
+    font-size: 0.8em;
+    margin: 0 0 1em 0;
+    text-align: center;
+}
+
+#header-login .icons a
+{
+    color: #41484c;
+    -moz-transition: color 0.35s ease-in-out;
+    -webkit-transition: color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out;
+    -ms-transition: color 0.35s ease-in-out;
+    transition: color 0.35s ease-in-out;
+}
+
+#header-login .icons a:hover
+{
+    color: #fff;
+}
+
+h1.title_login {
+    text-align: center;
+    font-weight: bold;
+
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+
+img.logo_login {
+    /*margin-left: 35%;*/
+    /*margin-right: 35%;*/
+
+    /*margin-top: auto;*/
+
+    width: 100%;
+    /*height: 30%;*/
+}
+
+section.form_login {
+    /*margin-top: 50px;*/
+    /*margin-left: 20px;*/
+    /*margin-right: 20px;*/
+
+    /*margin-left: 40%;*/
+    /*margin-right: 40%;*/
+
+    /*margin-top: -30px;*/
+
+    /*width: 20%;*/
+    /*height: 30%;*/
+
+    padding: 20px;
+
+    background-color: #eeeeee;
+    border-radius: 0.35em;
+}
+
+input.button_login {
+    width: 88%;
+
+    margin-right: 15px;
+}
+
+section.form_login > form > div {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.input-login {
+    width: 100%;
+}

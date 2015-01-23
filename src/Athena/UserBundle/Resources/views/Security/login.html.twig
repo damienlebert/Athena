@@ -3,47 +3,85 @@
 
 {% block fos_user_content %}
 
-<div class="row">  
-  <div class="col-sm-2 col-md-2 col-lg-2"></div>
-  <div class="col-sm-8 col-md-8 col-lg-8">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="">Bienvenue, veuillez vous connecter pour participer au chat</h4>
-            </div><!-- /.panel-header -->
-            <form class="form-horizontal" action="{{ path("fos_user_security_check") }}" method="post">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                <div class="panel-body">
-{% if error %}
-                    <div class="alert alert-danger">{{ error|trans }}</div>
-{% endif %}    
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="username">Identifiant : </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" 
-                            placeholder="Identifiant" required="required" />
+
+        <div id="header-login" class="skel-layers-fixed">
+
+            <div class="top">
+
+                <div class="container">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <img src="/bundles/athenachat/images/logo-1.png" class="logo_login" />
                         </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
                     </div>
-                    <div class="form-group">  
-                        <label class="col-sm-3 control-label" for="password">Mot de passe : </label>
-                        <div class="col-sm-9">
-                            <input type="password" class="form-control" id="password" name="_password" 
-                            placeholder="Mot de passe" required="required" />
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <section class="form_login">
+                                <form class="form-horizontal" action="{{ path("fos_user_security_check") }}" method="post">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                                    <div class="panel-body">
+                                    {% if error %}
+                                        <div class="alert alert-danger">{{ error|trans }}</div>
+                                    {% endif %}
+                                        <h1 class="title_login">Connexion</h1>
+                                        <div class="form-group">
+                                            {#<label class="col-sm-3 control-label" for="username">Identifiant : </label>#}
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <input type="text" class="form-control input-login" id="username" name="_username" value="{{ last_username }}"
+                                                placeholder="Identifiant" required="required" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            {#<label class="col-sm-3 control-label" for="password">Mot de passe : </label>#}
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <input type="password" class="form-control input-login" id="password" name="_password"
+                                                placeholder="Mot de passe" required="required" />
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel-body -->
+                                        <input type="submit" class="btn btn-default button_login" id="_submit" name="_submit" value="Connexion" />
+                                        {#<a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" alt="Sign in with Google">#}
+                                            {#<img class="btn-google" src="{{ asset('bundles/athenachat/images/Red-signin.png') }}" alt="Sign in with Google" /></a>#}
+                                </form><!-- /.formulaire-connexion -->
+
+                            </section>
                         </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
                     </div>
-                </div><!-- /.panel-body -->
-            
-                <div class="panel-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <input type="submit" class="btn btn-primary" id="_submit" name="_submit" value="Connexion" />
-                    <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" alt="Sign in with Google">
-                        <img class="btn-google" src="{{ asset('bundles/athenachat/images/Red-signin.png') }}" alt="Sign in with Google" /></a>
-                </div><!-- /.panel-footer -->
-            </form><!-- /.formulaire-connexion -->
+
+
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <!-- Social Icons -->
+                            <ul class="icons">
+                                <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                                <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                                <li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+                                <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+                                <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+                            </ul>
+                            <div style="text-align: center;">
+
+                                <small style="font-size: 10px; color: grey; line-height: 12px;">
+                                    &copy;Copyright Pierre VASSOILLES & Damien LEBERT / IP-FORMATION <br>
+                                    Designed by <a href="http://html5up.net" target="_blank">HTML5 UP</a>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+                    </div>
+                </div>
+
+
             </div>
+
+
+
         </div>
-        <div class="col-sm-2 col-md-2 col-lg-2"></div>
-    </div>
-</div>
 {% endblock fos_user_content %}
 
 
