@@ -17,6 +17,7 @@
     "angular": "~1.3.6",
     "mustache.js": "~0.8.2",
     "moment": "~2.9.0",
-    "ddslick": "*"
+    "ddslick": "*",
+    "notifyjs": "~0.3.2"
   }
 }

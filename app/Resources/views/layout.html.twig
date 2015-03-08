@@ -83,6 +83,8 @@
     '@AthenaChatBundle/Resources/public/js/skel.min.js'
     '@AthenaChatBundle/Resources/public/js/skel-layers.min.js'
     '@AthenaChatBundle/Resources/public/js/init.js'
+    '@AthenaChatBundle/Resources/public/vendor/notifyjs/dist/notify.min.js'
+    '@AthenaChatBundle/Resources/public/vendor/notifyjs/dist/styles/bootstrap/notify-bootstrap.js'
     '@AthenaChatBundle/Resources/public/js/main.js'
     '@AthenaChatBundle/Resources/public/js/app.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -137,6 +139,7 @@
                     txt = '';
                     if (data['id'] == '{{ app.user.id }}') {
                         txt = '<div class="chat-room-message">--- Vous êtes maintenant connecté.</div>';
+                        $.notify("Vous êtes maintenante connecté.", "success");
                     } else {
                         txt = '<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant connecté.</div>';
                     }
