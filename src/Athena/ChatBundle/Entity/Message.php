@@ -56,7 +56,7 @@ class Message
     /** 
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation")
+     * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation", inversedBy="messages")
      * @ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation", nullable=false)
 	 * @Exclude
      */

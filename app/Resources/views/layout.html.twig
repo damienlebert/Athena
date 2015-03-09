@@ -11,6 +11,7 @@
     <title>{% block title %}Athena Chat{% endblock %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="http://athena.example.com/favicon.ico?v=2" />
 
     {% stylesheets filter='cssrewrite'
     'bundles/athenachat/vendor/bootstrap/dist/css/bootstrap.css'
@@ -139,9 +140,10 @@
                     txt = '';
                     if (data['id'] == '{{ app.user.id }}') {
                         txt = '<div class="chat-room-message">--- Vous êtes maintenant connecté.</div>';
-                        $.notify("Vous êtes maintenante connecté.", "success");
+                        $.notify("Vous êtes maintenant connecté.", "success");
                     } else {
                         txt = '<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant connecté.</div>';
+                        $.notify(data['fullname']+" est maintenant connecté(e).", "success");
                     }
                     $('#chat-room-messages').append(txt);
                     $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
@@ -149,6 +151,7 @@
 
                 socket.on('user disconnected', function(data) {
                     $('#chat-room-messages').append('<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant déconnecté.</div>');
+                    $.notify(data['fullname']+" est maintenant déconnecté(e).", "info");
                     $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
                 });
 

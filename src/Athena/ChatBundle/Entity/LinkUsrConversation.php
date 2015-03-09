@@ -19,7 +19,7 @@ class LinkUsrConversation
      * @var Conversation
      *
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation")
+     * @ORM\ManyToOne(targetEntity="Athena\ChatBundle\Entity\Conversation", inversedBy="user_conversation")
      * @ORM\JoinColumn(name="id_conversation", referencedColumnName="id_conversation")
      */
     protected $conversation;
@@ -28,7 +28,7 @@ class LinkUsrConversation
      * @var User
      *
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Athena\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Athena\UserBundle\Entity\User", inversedBy="user_conversation")
      * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      */
     protected $user;
