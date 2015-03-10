@@ -9,6 +9,7 @@
 
                 <!-- Logo -->
                 <div id="logo">
+                    {#<img src="{{ asset("/bundles/athenachat/images/logo-1.png") }}"/>#}
                     <span class="image avatar48"><img src="{{ asset('bundles/athenachat/images/avatars/'~app.user.avatar) }}" alt="" /></span>
                     <h1 id="title">{{ app.user.lastname }}&nbsp;{{ app.user.firstname }}</h1>
                     <p>
@@ -39,21 +40,23 @@
                         </div>
                         {{ form_widget(form.avatar) }}
                     {{ form_end(form) }}
-
+                    <form name="fos_user_change_password" method="post" action="{{ path('changePassword') }}">
                         <h4>
                             Mot de passe
                         </h4>
-
                         <div>
-                            {#{{ form_widget(form.plainPassword.first) }}#}
+                            {{ form_widget(formPassword.current_password) }}
                         </div>
                         <div>
-                            {#{{ form_widget(form.plainPassword.second) }}#}
+                            {{ form_widget(formPassword.plainPassword.first) }}
+                        </div>
+                        <div>
+                            {{ form_widget(formPassword.plainPassword.second) }}
                         </div>
                         <div>
                             <button class="btn btn-default" name="Valider">Enregistrer</button>
                         </div>
-
+                    </form>
 
 
                 </section>

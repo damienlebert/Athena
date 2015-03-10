@@ -99,7 +99,17 @@
             function getUsernames(){
                 socket.emit('getUsernames', '{{ app.user.id }}');
             }
+
             jQuery(function($){
+
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    $.notify("{{ flashMessage }}", "success");
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    $.notify("{{ flashMessage }}", "error");
+                {% endfor %}
+
+
 
                 $('.user-td').on("click", function(e){
                     e.preventDefault();
@@ -139,19 +149,19 @@
 
                     txt = '';
                     if (data['id'] == '{{ app.user.id }}') {
-                        txt = '<div class="chat-room-message">--- Vous êtes maintenant connecté.</div>';
-                        $.notify("Vous êtes maintenant connecté.", "success");
+                        txt = '<div class="chat-room-message">--- Vous êtes maintenant connecté(e)</div>';
+                        $.notify("Vous êtes maintenant connecté(e)", "success");
                     } else {
-                        txt = '<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant connecté.</div>';
-                        $.notify(data['fullname']+" est maintenant connecté(e).", "success");
+                        txt = '<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant connecté(e)</div>';
+                        $.notify(data['fullname']+" est maintenant connecté(e)", "success");
                     }
                     $('#chat-room-messages').append(txt);
                     $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
                 });
 
                 socket.on('user disconnected', function(data) {
-                    $('#chat-room-messages').append('<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant déconnecté.</div>');
-                    $.notify(data['fullname']+" est maintenant déconnecté(e).", "info");
+                    $('#chat-room-messages').append('<div class="chat-room-message">--- <strong class="chat-room-name">'+data['fullname']+'</strong> est maintenant déconnecté(e)</div>');
+                    $.notify(data['fullname']+" est maintenant déconnecté(e)", "info");
                     $('#chat-room-messages').animate({scrollTop:60000}, 'fast');
                 });
 

@@ -2,6 +2,10 @@ default:
     path:  /
     defaults: { _controller: AthenaChatBundle:Chat:welcome }
 
+changePassword:
+    path:  /change_password
+    defaults: { _controller: AthenaChatBundle:Chat:changePassword }
+
 users:
     path:  /users
     defaults: { _controller: AthenaChatBundle:Chat:users }
