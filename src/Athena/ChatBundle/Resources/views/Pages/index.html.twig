@@ -9,7 +9,7 @@
 
                 <!-- Logo -->
                 <div id="logo">
-                    {#<img src="{{ asset("/bundles/athenachat/images/logo-1.png") }}"/>#}
+
                     <span class="image avatar48"><img src="{{ asset('bundles/athenachat/images/avatars/'~app.user.avatar) }}" alt="" /></span>
                     <h1 id="title">{{ app.user.lastname }}&nbsp;{{ app.user.firstname }}</h1>
                     <p>
@@ -90,20 +90,17 @@
         <div id="main">
 
             <!-- Intro -->
-            <section id="top" class="">
-                <div class="container">
-
-                    <header>
-                        <h2 class="alt">
-                            Bienvenue. Cet espace est réservé à la détente sociale.
-                        </h2>
-                    </header>
-
-                </div>
-            </section>
-            <section id="section-chat-room">
+            <section id="section-chat-room" class="">
 
                 <div class="container">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                            <img src="{{ asset("/bundles/athenachat/images/logo-2.png") }}" style="opacity: 0.5;"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                    </div>
+
                     <div class="row">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                         <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
