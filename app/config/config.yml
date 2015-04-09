@@ -133,3 +133,16 @@ jms_serializer:
       FOSUserBundle:
         namespace_prefix: FOS\UserBundle
         path: "@AthenaAjaxBundle/Resources/config/serializer"
+
+#deploy:
+#  prod:
+#    rsync-options: '-azC --force --delete --progress -h --checksum'
+#    host: 37.187.117.209
+#    dir: /home/www/athena
+#    user: www
+#    port: 22
+#    timeout: 120 # Connection timeout in seconds. 0 for no timeout.
+#    post_deploy_operations:
+#        - app/console cache:clear --env=prod
+#        - app/console assets:install --env=prod
+#        - app/console assetic:dump --env=prod

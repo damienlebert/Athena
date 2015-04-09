@@ -9,6 +9,7 @@ use Symfony\Component\Finder\Finder;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -157,7 +158,7 @@ class DefaultController extends FOSRestController
     /**
      * @View()
      *
-     * @GET("/user/search/{search}")
+     * @Get("/user/search/{search}", options={"expose"=true}, defaults={"search"=null})
      */
     public function searchUserAction(Request $request, $search)
     {
@@ -165,7 +166,7 @@ class DefaultController extends FOSRestController
         if($this->getRequest()->isXmlHttpRequest()) {
             if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 
-                return $service-findUsers($search);
+                return $service->findUsers($search, $this->getUser());
 
             }
         }

@@ -30,6 +30,9 @@ hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /login
 
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 facebook_login:
     pattern: /login/check-facebook
 
@@ -39,6 +42,8 @@ google_login:
 athena_chat:
     resource: "@AthenaChatBundle/Resources/config/routing.yml"
     prefix:   /
+
+
 
 #athena_ajax:
 #    resource: "@AthenaAjaxBundle/Resources/config/routing.yml"

@@ -41,11 +41,11 @@ class Chat
 	 * Recherche des utilisateurs à partir du nom, du prénom ou du mail
 	 * @param unknown $keyword
 	 */
-	public function findUsers($keyword)
+	public function findUsers($keyword, $user)
 	{
 	    return $this->em
                     ->getRepository('AthenaUserBundle:User')
-                    ->findUsers($keyword);
+                    ->findUsers($keyword, $user);
 	}
 	
 	/**

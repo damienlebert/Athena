@@ -30,15 +30,23 @@ class UserRepository extends EntityRepository
      * Recherche des utilisateurs à partir du nom, du prénom ou du mail
      * @param unknown $keyword
      */
-    public function findUsers($keyword)
+    public function findUsers($keyword, $user = null)
     {
-        return $this->createQueryBuilder('u')
-                            ->where('u.username like :keyword')
-                            ->orWhere('u.firstName like :keyword')
-                            ->orWhere('u.lastName like :keyword')
-                            ->setParameter('keyword', '%'.$keyword.'%')
-                            ->getQuery()
-                            ->getResult();
+
+        $q = $this
+                ->createQueryBuilder('u')
+                ->where('u.username like :keyword')
+                ->orWhere('u.firstName like :keyword')
+                ->orWhere('u.lastName like :keyword')
+                ->setParameter('keyword', '%'.$keyword.'%')
+            ;
+
+        if ($user && $user instanceof User) {
+            $q->andWhere('u.id != :id')
+                ->setParameter('id', $user->getId());
+        }
+
+        return $q->getQuery()->getResult();
     }
 
 

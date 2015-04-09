@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle($this),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Athena\ChatBundle\AthenaChatBundle(),
             new Athena\UserBundle\AthenaUserBundle(),
             new Athena\AjaxBundle\AthenaAjaxBundle(),
