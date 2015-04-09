@@ -47,7 +47,7 @@
 	    <div class="container panel-conversation">
 	            <div class="table-users">
 	                <div class="row blue-text panel-head" onClick="$('#users').toggle('medium');">
-	                    <div><strong>Conversation</strong></div>
+	                    <div style="z-index: 100;"><strong>Conversation</strong></div>
 	                </div>
 	                <div class="row" id="users">
 	                    <ul class="tableau-users" id="liste-users">
@@ -137,7 +137,6 @@
                 socket.emit('new user', { id:'{{ app.user.id }}', fullname:'{{ app.user.fullname }}'});
 
                 socket.on('usernames', function(data){
-                    //console.log('im here');
                     updateConnected(data);
                 });
 
@@ -196,22 +195,17 @@
 
 
                 socket.on('new message', function(data){
-                    //console.log("Nouveau message reçu:");
-                    //console.log(data);
 
                     if(data['from'] == '{{ app.user.id }}'){
                         addMessage(data['conversation'], data['msg'], null, true, avatars[data['from']]);
                     }else{
-                        //var nomFrom = $("#contact-"+data['from']).html().split('<')[0];
-                        //console.log("Message from: " + nomFrom);
                         ajouterConversation(data['from'], data['fromname']);
-                        addMessage(data['conversation'], data['msg'], null, false);
-                        $('#messagesPanel-'+data['conversation']).animate({scrollTop:60000}, 'fast', avatars[data['from']]);
+                        addMessage(data['conversation'], data['msg'], null, false, avatars[data['from']]);
                     }
+
                 });
 
                 socket.on('new chatroom message', function(data) {
-                    //console.log('Nouveau message à tous : ' + data['msg']);
 
                     from = data['from'];
 
@@ -242,7 +236,7 @@
                         //Ajouter le message dans la base
                         $.ajax({
                             type: "POST",
-                            url: "/messages/add/" + conversation,
+                            url: Routing.generate('add_message', { idConversation: conversation }),
                             data: {userConnecte: '{{ app.user.id }}', message: message},
                             success:function(){
                                 socket.emit('send message', SendData);
@@ -264,7 +258,7 @@
                 $('#recherche').on('keyup', function(e){
                        $.ajax({
                            type: "GET",
-                           url: Routing.generate('search_user', { search: $(this).val()}),
+                           url: Routing.generate('search_user', { search: $(this).val() }),
                            success:function(data){
                                var liste = '';
                                $.each(data, function(key, object){

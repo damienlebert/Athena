@@ -55,7 +55,7 @@ class DefaultController extends FOSRestController
     /**
      * @View()
      *
-     * @GET("/conversation/get/{idOther}")
+     * @GET("/conversation/get/{idOther}", options={"expose"=true})
      */
     public function getConversationAction($idOther)
     {
@@ -83,7 +83,7 @@ class DefaultController extends FOSRestController
     /**
      * @View()
      *
-     * @GET("/conversation/remove/{idConversation}")
+     * @GET("/conversation/remove/{idConversation}", options={"expose"=true})
      */
     public function removeConversationAction($idConversation)
     {
@@ -121,7 +121,7 @@ class DefaultController extends FOSRestController
     /**
      * @View()
      *
-     * @POST("/messages/add/{idConversation}", name="athena_ajax_new_message")
+     * @POST("/messages/add/{idConversation}", name="athena_ajax_new_message", options={"expose"=true})
      */
     public function addMessageAction(Request $request, $idConversation)
     {

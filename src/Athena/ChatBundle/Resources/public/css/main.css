@@ -346,7 +346,7 @@ div.messages > p {
 #users {
     max-height: 650px;
     margin-right: 0;
-    overflow: auto;
+    margin-top: 0px !important;
 }
 
 .user-td {
