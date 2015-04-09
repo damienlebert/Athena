@@ -79,6 +79,9 @@ fos_user:
         form:
             type: athena_user_registration
             validation_groups: [AthenaRegistration]
+    from_email:
+        address:        noreply@athena.com
+        sender_name:    Athena Chat
 
 #HWIOAuthBundle
 hwi_oauth:

@@ -37,8 +37,7 @@
     <div id="contenu-page">
         <div id="error"></div>
         {% block content %}
-            <h1>Contenu par defaut</h1>
-        {% endblock %}
+        {% endblock content %}
 
     </div>
 
@@ -292,18 +291,14 @@
 //                    }
 //                });
             });
-
+            $("#users").mCustomScrollbar({
+                theme:"minimal-dark"
+            });
         </script>
     {% endif %}
 
     {% block javascripts %}
     {% endblock javascripts %}
 
-
-       <script type="text/javascript">
-              $("#users").mCustomScrollbar({
-                   theme:"minimal-dark"
-               });
-       </script>
    </body>
 </html>

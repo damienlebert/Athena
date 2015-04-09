@@ -10,7 +10,7 @@ fos_user_register:
     prefix: /register
 
 fos_user_resetting:
-    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    resource: "@AthenaUserBundle/Resources/config/routing/resetting.xml"
     prefix: /resetting
 
 fos_user_change_password:

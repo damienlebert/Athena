@@ -687,3 +687,7 @@ section.form_login > form > div {
 .input-login {
     width: 100%;
 }
+
+.black-link {
+    color:#666;
+}
